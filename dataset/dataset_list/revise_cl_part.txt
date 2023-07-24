@@ -1,0 +1,12 @@
+08_AbdomenCT-1K_Case_00003_0000/ct.nii.gz	08_AbdomenCT-1K_Case_00003_0000/pseudo_part_label.nii.gz
+08_AbdomenCT-1K_Case_00071_0000/ct.nii.gz	08_AbdomenCT-1K_Case_00071_0000/pseudo_part_label.nii.gz
+08_AbdomenCT-1K_Case_00077_0000/ct.nii.gz	08_AbdomenCT-1K_Case_00077_0000/pseudo_part_label.nii.gz
+08_AbdomenCT-1K_Case_00088_0000/ct.nii.gz	08_AbdomenCT-1K_Case_00088_0000/pseudo_part_label.nii.gz
+08_AbdomenCT-1K_Case_00229_0000/ct.nii.gz	08_AbdomenCT-1K_Case_00229_0000/pseudo_part_label.nii.gz
+08_AbdomenCT-1K_Case_00237_0000/ct.nii.gz	08_AbdomenCT-1K_Case_00237_0000/pseudo_part_label.nii.gz
+08_AbdomenCT-1K_Case_00261_0000/ct.nii.gz	08_AbdomenCT-1K_Case_00261_0000/pseudo_part_label.nii.gz
+08_AbdomenCT-1K_Case_00263_0000/ct.nii.gz	08_AbdomenCT-1K_Case_00263_0000/pseudo_part_label.nii.gz
+08_AbdomenCT-1K_Case_00265_0000/ct.nii.gz	08_AbdomenCT-1K_Case_00265_0000/pseudo_part_label.nii.gz
+08_AbdomenCT-1K_Case_00278_0000/ct.nii.gz	08_AbdomenCT-1K_Case_00278_0000/pseudo_part_label.nii.gz
+08_AbdomenCT-1K_Case_00279_0000/ct.nii.gz	08_AbdomenCT-1K_Case_00279_0000/pseudo_part_label.nii.gz
+08_AbdomenCT-1K_Case_00292_0000/ct.nii.gz	08_AbdomenCT-1K_Case_00292_0000/pseudo_part_label.nii.gz

@@ -1,0 +1,1 @@
+03_CHAOS/ct/img/28_image.nii.gz	03_CHAOS/ct/liver_label/28_segmentation.nii.gz
