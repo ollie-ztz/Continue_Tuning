@@ -57,10 +57,9 @@ TEMPLATE={
     '10_08': [15, 29], # post process
     '10_09': [1],
     '10_10': [31],
-    '15': [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17], ## total segmentation
     '18':[6,2,1,11,8,9,12,13,4,5,7,14,3],
     'all': [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32], 
-    'target':[1,2,3,4,6,7,8,9,11], ## target organ index
+    'target':[1,2,3,6,11], ## target organ index
     'assemble':[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25],
     'finetune':[4,7,8,9],
 }
@@ -1125,7 +1124,5 @@ def merge_organ(args,lbl,containing_totemplate):
 
 
     return lbl
-
-
 if __name__ == "__main__":
     threshold_organ(torch.zeros(1,12,1))    

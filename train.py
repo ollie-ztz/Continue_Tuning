@@ -39,12 +39,17 @@ def train(args, train_loader, model, optimizer, loss_seg_DICE, loss_seg_CE):
         train_loader, desc="Training (X / X Steps) (loss=X.X)", dynamic_ncols=True
     )
     for step, batch in enumerate(epoch_iterator):
+        # Assuming we use our pseudo label here to train and we only care about the original 5 organs for dataset 08
         x, lbl, name = batch["image"].to(args.device), batch["label"].float(), batch['name']
         B, C, W, H, D = lbl.shape
         y = torch.zeros(B,NUM_CLASS,W,H,D)
         for b in range(B):
             for src,tgt in enumerate(TEMPLATE['all']):
                 y[b][src][lbl[b][0]==tgt] = 1
+        for b in range(B):
+            for c in range(NUM_CLASS):
+                if c+1 not in TEMPLATE['target']:
+                    y[b][c] = 0
         y = merge_organ(args,y,containing_totemplate)
         y = y.to(args.device)
         logit_map = model(x)
@@ -141,7 +146,6 @@ def process(args):
         model = DistributedDataParallel(model, device_ids=[args.device])
 
     # criterion and optimizer
-    # loss_function = DiceCELoss(to_onehot_y=True, softmax=True)
     loss_seg_DICE = loss.DiceLoss(num_classes=NUM_CLASS).to(args.device)
     loss_seg_CE = loss.Multi_BCELoss(num_classes=NUM_CLASS).to(args.device)
     if args.backbone == 'unetpp':
@@ -183,9 +187,9 @@ def process(args):
 
             
         # Becareful, the optimizer should be loaded after the model
-        # optimizer.load_state_dict(checkpoint['optimizer'])
+        optimizer.load_state_dict(checkpoint['optimizer'])
         args.epoch = checkpoint['epoch']
-        # scheduler.load_state_dict(checkpoint['scheduler'])
+        scheduler.load_state_dict(checkpoint['scheduler'])
         
         print('success resume from ', args.resume)
 
@@ -289,5 +293,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-# python -m torch.distributed.launch --nproc_per_node=2 --master_port=1234 train.py --dist True --uniform_sample

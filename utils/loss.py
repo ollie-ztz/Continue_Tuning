@@ -53,9 +53,7 @@ class DiceLoss(nn.Module):
             # for all
             # organ_list = TEMPLATE['all']
             # for part
-            organ_list = TEMPLATE['finetune']
-           
-
+            organ_list = TEMPLATE['all']
             new_list = []
             for idx in non_zero_list:
                 if idx+1 in organ_list:
