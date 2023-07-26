@@ -1,0 +1,73 @@
+Use pretrained weights
+test len 50
+Image File copied successfully.
+Label File copied successfully.
+/medical_backup/PublicAbdominalData/14_FELIX/img/FELIX0406_ARTERIAL.nii.gz
+/medical_backup/PublicAbdominalData/14_FELIX/label/FELIX0406_ARTERIAL.nii.gz
+torch.Size([1, 1, 222, 178, 193])
+['14_FELIX/img/FELIX0406_ARTERIAL']
+this case does not have lungs!
+left lung size: 0.0
+right lung size: 0.0
+find number of anomaly slice: 0
+filter out
+filter out
+organ seg saved in path: /mnt/tiezheng/continue_learning_data/08_R1_before/14_FELIX/FELIX0406_ARTERIAL/backbones/swinunetr/segmentations/spleen.nii.gz
+organ seg saved in path: /mnt/tiezheng/continue_learning_data/08_R1_before/14_FELIX/FELIX0406_ARTERIAL/backbones/swinunetr/segmentations/kidney_right.nii.gz
+organ seg saved in path: /mnt/tiezheng/continue_learning_data/08_R1_before/14_FELIX/FELIX0406_ARTERIAL/backbones/swinunetr/segmentations/kidney_left.nii.gz
+organ seg saved in path: /mnt/tiezheng/continue_learning_data/08_R1_before/14_FELIX/FELIX0406_ARTERIAL/backbones/swinunetr/segmentations/gall_bladder.nii.gz
+organ seg saved in path: /mnt/tiezheng/continue_learning_data/08_R1_before/14_FELIX/FELIX0406_ARTERIAL/backbones/swinunetr/segmentations/esophagus.nii.gz
+organ seg saved in path: /mnt/tiezheng/continue_learning_data/08_R1_before/14_FELIX/FELIX0406_ARTERIAL/backbones/swinunetr/segmentations/liver.nii.gz
+organ seg saved in path: /mnt/tiezheng/continue_learning_data/08_R1_before/14_FELIX/FELIX0406_ARTERIAL/backbones/swinunetr/segmentations/stomach.nii.gz
+organ seg saved in path: /mnt/tiezheng/continue_learning_data/08_R1_before/14_FELIX/FELIX0406_ARTERIAL/backbones/swinunetr/segmentations/aorta.nii.gz
+organ seg saved in path: /mnt/tiezheng/continue_learning_data/08_R1_before/14_FELIX/FELIX0406_ARTERIAL/backbones/swinunetr/segmentations/postcava.nii.gz
+organ seg saved in path: /mnt/tiezheng/continue_learning_data/08_R1_before/14_FELIX/FELIX0406_ARTERIAL/backbones/swinunetr/segmentations/portal_vein_and_splenic_vein.nii.gz
+organ seg saved in path: /mnt/tiezheng/continue_learning_data/08_R1_before/14_FELIX/FELIX0406_ARTERIAL/backbones/swinunetr/segmentations/pancreas.nii.gz
+organ seg saved in path: /mnt/tiezheng/continue_learning_data/08_R1_before/14_FELIX/FELIX0406_ARTERIAL/backbones/swinunetr/segmentations/adrenal_gland_right.nii.gz
+organ seg saved in path: /mnt/tiezheng/continue_learning_data/08_R1_before/14_FELIX/FELIX0406_ARTERIAL/backbones/swinunetr/segmentations/adrenal_gland_left.nii.gz
+organ seg saved in path: /mnt/tiezheng/continue_learning_data/08_R1_before/14_FELIX/FELIX0406_ARTERIAL/backbones/swinunetr/segmentations/duodenum.nii.gz
+organ seg saved in path: /mnt/tiezheng/continue_learning_data/08_R1_before/14_FELIX/FELIX0406_ARTERIAL/backbones/swinunetr/segmentations/hepatic_vessel.nii.gz
+organ seg saved in path: /mnt/tiezheng/continue_learning_data/08_R1_before/14_FELIX/FELIX0406_ARTERIAL/backbones/swinunetr/segmentations/lung_right.nii.gz
+organ seg saved in path: /mnt/tiezheng/continue_learning_data/08_R1_before/14_FELIX/FELIX0406_ARTERIAL/backbones/swinunetr/segmentations/lung_left.nii.gz
+organ seg saved in path: /mnt/tiezheng/continue_learning_data/08_R1_before/14_FELIX/FELIX0406_ARTERIAL/backbones/swinunetr/segmentations/colon.nii.gz
+organ seg saved in path: /mnt/tiezheng/continue_learning_data/08_R1_before/14_FELIX/FELIX0406_ARTERIAL/backbones/swinunetr/segmentations/intestine.nii.gz
+organ seg saved in path: /mnt/tiezheng/continue_learning_data/08_R1_before/14_FELIX/FELIX0406_ARTERIAL/backbones/swinunetr/segmentations/rectum.nii.gz
+organ seg saved in path: /mnt/tiezheng/continue_learning_data/08_R1_before/14_FELIX/FELIX0406_ARTERIAL/backbones/swinunetr/segmentations/bladder.nii.gz
+organ seg saved in path: /mnt/tiezheng/continue_learning_data/08_R1_before/14_FELIX/FELIX0406_ARTERIAL/backbones/swinunetr/segmentations/prostate.nii.gz
+organ seg saved in path: /mnt/tiezheng/continue_learning_data/08_R1_before/14_FELIX/FELIX0406_ARTERIAL/backbones/swinunetr/segmentations/femur_left.nii.gz
+organ seg saved in path: /mnt/tiezheng/continue_learning_data/08_R1_before/14_FELIX/FELIX0406_ARTERIAL/backbones/swinunetr/segmentations/femur_right.nii.gz
+organ seg saved in path: /mnt/tiezheng/continue_learning_data/08_R1_before/14_FELIX/FELIX0406_ARTERIAL/backbones/swinunetr/segmentations/celiac_truck.nii.gz
+organ seg saved in path: /mnt/tiezheng/continue_learning_data/08_R1_before/14_FELIX/FELIX0406_ARTERIAL/backbones/swinunetr/segmentations/kidney_tumor.nii.gz
+organ seg saved in path: /mnt/tiezheng/continue_learning_data/08_R1_before/14_FELIX/FELIX0406_ARTERIAL/backbones/swinunetr/segmentations/liver_tumor.nii.gz
+organ seg saved in path: /mnt/tiezheng/continue_learning_data/08_R1_before/14_FELIX/FELIX0406_ARTERIAL/backbones/swinunetr/segmentations/pancreas_tumor.nii.gz
+organ seg saved in path: /mnt/tiezheng/continue_learning_data/08_R1_before/14_FELIX/FELIX0406_ARTERIAL/backbones/swinunetr/segmentations/hepatic_vessel_tumor.nii.gz
+organ seg saved in path: /mnt/tiezheng/continue_learning_data/08_R1_before/14_FELIX/FELIX0406_ARTERIAL/backbones/swinunetr/segmentations/lung_tumor.nii.gz
+organ seg saved in path: /mnt/tiezheng/continue_learning_data/08_R1_before/14_FELIX/FELIX0406_ARTERIAL/backbones/swinunetr/segmentations/colon_tumor.nii.gz
+organ seg saved in path: /mnt/tiezheng/continue_learning_data/08_R1_before/14_FELIX/FELIX0406_ARTERIAL/backbones/swinunetr/segmentations/kidney_cyst.nii.gz
+pseudo label saved in path: /mnt/tiezheng/continue_learning_data/08_R1_before/14_FELIX/FELIX0406_ARTERIAL/backbones/swinunetr/pseudo_label.nii.gz
+Image File copied successfully.
+Label File copied successfully.
+/medical_backup/PublicAbdominalData/14_FELIX/img/FELIX0121_ARTERIAL.nii.gz
+/medical_backup/PublicAbdominalData/14_FELIX/label/FELIX0121_ARTERIAL.nii.gz
+torch.Size([1, 1, 203, 165, 210])
+['14_FELIX/img/FELIX0121_ARTERIAL']
+this case does not have lungs!
+left lung size: 0.0
+right lung size: 0.0
+find number of anomaly slice: 0
+filter out
+filter out
+organ seg saved in path: /mnt/tiezheng/continue_learning_data/08_R1_before/14_FELIX/FELIX0121_ARTERIAL/backbones/swinunetr/segmentations/spleen.nii.gz
+organ seg saved in path: /mnt/tiezheng/continue_learning_data/08_R1_before/14_FELIX/FELIX0121_ARTERIAL/backbones/swinunetr/segmentations/kidney_right.nii.gz
+organ seg saved in path: /mnt/tiezheng/continue_learning_data/08_R1_before/14_FELIX/FELIX0121_ARTERIAL/backbones/swinunetr/segmentations/kidney_left.nii.gz
+organ seg saved in path: /mnt/tiezheng/continue_learning_data/08_R1_before/14_FELIX/FELIX0121_ARTERIAL/backbones/swinunetr/segmentations/gall_bladder.nii.gz
+organ seg saved in path: /mnt/tiezheng/continue_learning_data/08_R1_before/14_FELIX/FELIX0121_ARTERIAL/backbones/swinunetr/segmentations/esophagus.nii.gz
+organ seg saved in path: /mnt/tiezheng/continue_learning_data/08_R1_before/14_FELIX/FELIX0121_ARTERIAL/backbones/swinunetr/segmentations/liver.nii.gz
+organ seg saved in path: /mnt/tiezheng/continue_learning_data/08_R1_before/14_FELIX/FELIX0121_ARTERIAL/backbones/swinunetr/segmentations/stomach.nii.gz
+organ seg saved in path: /mnt/tiezheng/continue_learning_data/08_R1_before/14_FELIX/FELIX0121_ARTERIAL/backbones/swinunetr/segmentations/aorta.nii.gz
+organ seg saved in path: /mnt/tiezheng/continue_learning_data/08_R1_before/14_FELIX/FELIX0121_ARTERIAL/backbones/swinunetr/segmentations/postcava.nii.gz
+organ seg saved in path: /mnt/tiezheng/continue_learning_data/08_R1_before/14_FELIX/FELIX0121_ARTERIAL/backbones/swinunetr/segmentations/portal_vein_and_splenic_vein.nii.gz
+organ seg saved in path: /mnt/tiezheng/continue_learning_data/08_R1_before/14_FELIX/FELIX0121_ARTERIAL/backbones/swinunetr/segmentations/pancreas.nii.gz
+organ seg saved in path: /mnt/tiezheng/continue_learning_data/08_R1_before/14_FELIX/FELIX0121_ARTERIAL/backbones/swinunetr/segmentations/adrenal_gland_right.nii.gz
+organ seg saved in path: /mnt/tiezheng/continue_learning_data/08_R1_before/14_FELIX/FELIX0121_ARTERIAL/backbones/swinunetr/segmentations/adrenal_gland_left.nii.gz
+organ seg saved in path: /mnt/tiezheng/continue_learning_data/08_R1_before/14_FELIX/FELIX0121_ARTERIAL/backbones/swinunetr/segmentations/duodenum.nii.gz

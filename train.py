@@ -46,10 +46,11 @@ def train(args, train_loader, model, optimizer, loss_seg_DICE, loss_seg_CE):
         for b in range(B):
             for src,tgt in enumerate(TEMPLATE['all']):
                 y[b][src][lbl[b][0]==tgt] = 1
-        for b in range(B):
-            for c in range(NUM_CLASS):
-                if c+1 not in TEMPLATE['target']:
-                    y[b][c] = 0
+        if args.original_label:
+            for b in range(B):
+                for c in range(NUM_CLASS):
+                    if c+1 not in TEMPLATE['target']:
+                        y[b][c] = 0
         y = merge_organ(args,y,containing_totemplate)
         y = y.to(args.device)
         logit_map = model(x)
@@ -187,9 +188,9 @@ def process(args):
 
             
         # Becareful, the optimizer should be loaded after the model
-        optimizer.load_state_dict(checkpoint['optimizer'])
+        # optimizer.load_state_dict(checkpoint['optimizer'])
         args.epoch = checkpoint['epoch']
-        scheduler.load_state_dict(checkpoint['scheduler'])
+        # scheduler.load_state_dict(checkpoint['scheduler'])
         
         print('success resume from ', args.resume)
 
@@ -286,6 +287,7 @@ def main():
     parser.add_argument('--cache_dataset', action="store_true", default=False, help='whether use cache dataset')
     parser.add_argument('--cache_rate', default=0.005, type=float, help='The percentage of cached data in total')
     parser.add_argument('--internal_organ', default=True , type=bool, help='Ourdata or internal organ')
+    # parser.add_argument('--original_label',action="store_true",default=False,help='whether use original label')
 
     args = parser.parse_args()
     
