@@ -1,0 +1,13 @@
+liver: 0.000751555626834527
+kidney_right: 0.016822893080516498
+spleen: 0.5879700958635419
+pancreas: 1.0
+aorta: 0.6848346139088148
+postcava: 0.36871728271059445
+adrenal_gland_right: 1.0
+adrenal_gland_left: 1.0
+gall_bladder: 1.0
+stomach: 0.8369870587312025
+duodenum: 1.0
+kidney_left: 0.0032491857489886275
+colon: 1.0
