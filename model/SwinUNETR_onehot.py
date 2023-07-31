@@ -276,50 +276,15 @@ class SwinUNETR_onehot(nn.Module):
         dec0 = self.decoder2(dec1, enc1)
         out = self.decoder1(dec0, enc0)
 
+        return dec4, out
+
         # generate conv filters for classification layer
 
         # task_encoding = self.encoding_task(task_id) 
         # # print(task_encoding.shape)
         # task_encoding.unsqueeze_(2).unsqueeze_(2).unsqueeze_(2)
         # # print(task_encoding.shape)
-        if self.encoding == 'rand_embedding':
-            task_encoding = self.organ_embedding.weight.unsqueeze(2).unsqueeze(2).unsqueeze(2)
-        elif self.encoding == 'word_embedding':
-            task_encoding = self.organ_embedding
-            task_encoding = task_encoding.unsqueeze(2).unsqueeze(2).unsqueeze(2)
-        # task_encoding torch.Size([31, 256, 1, 1, 1])
 
-        x_feat = self.GAP(dec4)
-        b = x_feat.shape[0]
-        logits_array = []
-
-        class_params = list()
-        for icls in range(self.class_num):
-            # x_cond = torch.cat([x_feat, task_encoding[icls].unsqueeze(0).expand(b, -1, -1, -1, -1)], dim=1)
-            x_cond = x_feat
-            params = self.controllers[icls](x_cond)
-            class_params.append(params.squeeze(-1).squeeze(-1).squeeze(-1))
-        class_params = torch.stack(class_params, dim=1)    # shape batch x class x param
-        
-        for i in range(b):
-            params = class_params[i]
-            
-            head_inputs = self.precls_conv(out[i].unsqueeze(0))
-            head_inputs = head_inputs.repeat(self.class_num,1,1,1,1)
-            N, _, D, H, W = head_inputs.size()
-            head_inputs = head_inputs.reshape(1, -1, D, H, W)
-            # print(head_inputs.shape, params.shape)
-            weights, biases = self.parse_dynamic_params(params, 8, self.weight_nums, self.bias_nums)
-
-            logits = self.heads_forward(head_inputs, weights, biases, N)
-            logits_array.append(logits.reshape(1, -1, D, H, W))
-        
-        logits_array = torch.cat(logits_array,dim=0)
-        # print(out.shape)
-        if self.training or return_feature:
-            return [enc0, enc1, enc2, enc3, dec4, dec3, dec2, dec1, dec0, out, logits_array]
-        else:
-            return logits_array
 
 
 def window_partition(x, window_size):

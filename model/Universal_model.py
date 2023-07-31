@@ -217,19 +217,34 @@ class Universal_model(nn.Module):
     def forward(self, x_in):
         dec4, out = self.backbone(x_in)
 
+        # if self.encoding == 'rand_embedding':
+        #     task_encoding = self.organ_embedding.weight.unsqueeze(2).unsqueeze(2).unsqueeze(2)
+        # elif self.encoding == 'word_embedding':
+        #     task_encoding = F.relu(self.text_to_vision(self.organ_embedding))
+        #     task_encoding = task_encoding.unsqueeze(2).unsqueeze(2).unsqueeze(2)
+        # # task_encoding torch.Size([31, 256, 1, 1, 1])
+
         if self.encoding == 'rand_embedding':
             task_encoding = self.organ_embedding.weight.unsqueeze(2).unsqueeze(2).unsqueeze(2)
         elif self.encoding == 'word_embedding':
-            task_encoding = F.relu(self.text_to_vision(self.organ_embedding))
+            task_encoding = self.organ_embedding
             task_encoding = task_encoding.unsqueeze(2).unsqueeze(2).unsqueeze(2)
         # task_encoding torch.Size([31, 256, 1, 1, 1])
+
         x_feat = self.GAP(dec4)
         b = x_feat.shape[0]
         logits_array = []
+
+        class_params = list()
+        for icls in range(self.class_num):
+            # x_cond = torch.cat([x_feat, task_encoding[icls].unsqueeze(0).expand(b, -1, -1, -1, -1)], dim=1)
+            x_cond = x_feat
+            params = self.controllers[icls](x_cond)
+            class_params.append(params.squeeze(-1).squeeze(-1).squeeze(-1))
+        class_params = torch.stack(class_params, dim=1)    # shape batch x class x param
+        
         for i in range(b):
-            x_cond = torch.cat([x_feat[i].unsqueeze(0).repeat(self.class_num,1,1,1,1), task_encoding], 1)
-            params = self.controller(x_cond)
-            params.squeeze_(-1).squeeze_(-1).squeeze_(-1)
+            params = class_params[i]
             
             head_inputs = self.precls_conv(out[i].unsqueeze(0))
             head_inputs = head_inputs.repeat(self.class_num,1,1,1,1)
@@ -241,6 +256,32 @@ class Universal_model(nn.Module):
             logits = self.heads_forward(head_inputs, weights, biases, N)
             logits_array.append(logits.reshape(1, -1, D, H, W))
         
-        out = torch.cat(logits_array,dim=0)
+        logits_array = torch.cat(logits_array,dim=0)
         # print(out.shape)
-        return out
+        # if self.training or return_feature:
+        #     return [enc0, enc1, enc2, enc3, dec4, dec3, dec2, dec1, dec0, out, logits_array]
+        # else:
+        return logits_array
+
+
+        # x_feat = self.GAP(dec4)
+        # b = x_feat.shape[0]
+        # logits_array = []
+        # for i in range(b):
+        #     x_cond = torch.cat([x_feat[i].unsqueeze(0).repeat(self.class_num,1,1,1,1), task_encoding], 1)
+        #     params = self.controller(x_cond)
+        #     params.squeeze_(-1).squeeze_(-1).squeeze_(-1)
+            
+        #     head_inputs = self.precls_conv(out[i].unsqueeze(0))
+        #     head_inputs = head_inputs.repeat(self.class_num,1,1,1,1)
+        #     N, _, D, H, W = head_inputs.size()
+        #     head_inputs = head_inputs.reshape(1, -1, D, H, W)
+        #     # print(head_inputs.shape, params.shape)
+        #     weights, biases = self.parse_dynamic_params(params, 8, self.weight_nums, self.bias_nums)
+
+        #     logits = self.heads_forward(head_inputs, weights, biases, N)
+        #     logits_array.append(logits.reshape(1, -1, D, H, W))
+        
+        # out = torch.cat(logits_array,dim=0)
+        # # print(out.shape)
+        # return out

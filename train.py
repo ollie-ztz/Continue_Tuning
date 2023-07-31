@@ -241,7 +241,7 @@ def main():
     ## logging
     parser.add_argument('--log_name', default='swinunetr', help='The path resume from checkpoint')
     ## model load
-    parser.add_argument('--backbone', default='swinunetr', help='backbone [swinunetr or unet or dints or unetpp]')
+    parser.add_argument('--backbone', default='swinunetr', help='backbone [swinunetr or unet or dints or unetpp,swinunetr_onehot]')
     parser.add_argument('--resume', default=None, help='The path resume from checkpoint')
     parser.add_argument('--pretrain', default=None,  #swin_unetr.base_5000ep_f48_lr2e-4_pretrained.pt
                         help='The path of pretrain model. Eg, ./pretrained_weights/swin_unetr.base_5000ep_f48_lr2e-4_pretrained.pt')
