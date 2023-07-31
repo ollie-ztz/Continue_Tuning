@@ -15,7 +15,7 @@ from monai.utils import ensure_tuple_rep, optional_import
 rearrange, _ = optional_import("einops", name="rearrange")
 
 
-class SwinUNETR(nn.Module):
+class SwinUNETR_onehot(nn.Module):
     """
     Swin UNETR based on: "Hatamizadeh et al.,
     Swin UNETR: Swin Transformers for Semantic Segmentation of Brain Tumors in MRI Images
@@ -209,39 +209,6 @@ class SwinUNETR(nn.Module):
             res_block=True,
         ) 
 
-        # self.out = UnetOutBlock(spatial_dims=spatial_dims, in_channels=feature_size, out_channels=out_channels)  # type: ignore
-        
-        self.precls_conv = nn.Sequential(
-            nn.GroupNorm(16, 48),
-            nn.ReLU(inplace=True),
-            nn.Conv3d(48, 8, kernel_size=1)
-        )
-        self.GAP = nn.Sequential(
-            nn.GroupNorm(16, 768),
-            nn.ReLU(inplace=True),
-            nn.AdaptiveAvgPool3d((1,1,1)),
-            nn.Conv3d(768, 256, kernel_size=1, stride=1, padding=0)
-        )
-
-        self.weight_nums = [8*8, 8*8, 8*1]
-        self.bias_nums = [8, 8, 1]
-        # self.controller = nn.Conv3d(256+256, sum(self.weight_nums + self.bias_nums), kernel_size=1, stride=1, padding=0)
-        if self.encoding == 'rand_embedding':
-            self.organ_embedding = nn.Embedding(out_channels, 256)
-        elif self.encoding == 'word_embedding':
-            self.register_buffer('organ_embedding', torch.randn(out_channels, 512))
-            # self.text_to_vision = nn.Conv3d(768, 512, kernel_size=1, stride=1, padding=0)
-        self.class_num = out_channels
-        self.controllers = nn.ModuleList()
-        for iclass in range(self.class_num):
-            self.controllers.append(
-                nn.Sequential(
-                    nn.Conv3d(256, 128, kernel_size=1, stride=1, padding=0),
-                    nn.ReLU(),
-                    nn.Conv3d(128, sum(self.weight_nums + self.bias_nums), kernel_size=1, stride=1, padding=0)
-                )
-            )
-
     def load_from(self, weights):
 
         with torch.no_grad():
@@ -291,54 +258,6 @@ class SwinUNETR(nn.Module):
             self.swinViT.layers4[0].downsample.norm.bias.copy_(
                 weights["state_dict"]["module.layers4.0.downsample.norm.bias"]
             )
-
-    def encoding_task(self, task_id):
-        N = task_id.shape[0]
-        task_encoding = torch.zeros(size=(N, 7))
-        for i in range(N):
-            task_encoding[i, task_id[i]]=1
-        return task_encoding.cuda()
-
-    def parse_dynamic_params(self, params, channels, weight_nums, bias_nums):
-        assert params.dim() == 2
-        assert len(weight_nums) == len(bias_nums)
-        assert params.size(1) == sum(weight_nums) + sum(bias_nums)
-
-        num_insts = params.size(0)
-        num_layers = len(weight_nums)
-
-        params_splits = list(torch.split_with_sizes(
-            params, weight_nums + bias_nums, dim=1
-        ))
-
-        weight_splits = params_splits[:num_layers]
-        bias_splits = params_splits[num_layers:]
-
-        for l in range(num_layers):
-            if l < num_layers - 1:
-                weight_splits[l] = weight_splits[l].reshape(num_insts * channels, -1, 1, 1, 1)
-                bias_splits[l] = bias_splits[l].reshape(num_insts * channels)
-            else:
-                weight_splits[l] = weight_splits[l].reshape(num_insts * 1, -1, 1, 1, 1)
-                bias_splits[l] = bias_splits[l].reshape(num_insts * 1)
-            # print(weight_splits[l].shape, bias_splits[l].shape)
-
-        return weight_splits, bias_splits
-
-    def heads_forward(self, features, weights, biases, num_insts):
-        assert features.dim() == 5
-        n_layers = len(weights)
-        x = features
-        for i, (w, b) in enumerate(zip(weights, biases)):
-            # print(i, x.shape, w.shape)
-            x = F.conv3d(
-                x, w, bias=b,
-                stride=1, padding=0,
-                groups=num_insts
-            )
-            if i < n_layers - 1:
-                x = F.relu(x)
-        return x
 
     def forward(self, x_in, return_feature=False):
         hidden_states_out = self.swinViT(x_in, self.normalize)

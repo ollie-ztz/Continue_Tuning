@@ -9,6 +9,7 @@ from torch.nn import LayerNorm
 from model.SwinUNETR import SwinUNETR
 from model.Unet import UNet3D
 from model.DiNTS import TopologyInstance, DiNTS
+from model.SwinUNETR_onehot import SwinUNETR_onehot
 
 
 
@@ -85,28 +86,68 @@ class Universal_model(nn.Module):
                 torch.nn.AdaptiveAvgPool3d((1,1,1)),
                 nn.Conv3d(512, 256, kernel_size=1, stride=1, padding=0)
             )
+        elif backbone == 'swinunetr_onehot':
+            self.backbone = SwinUNETR_onehot(img_size=img_size,
+                        in_channels=in_channels,
+                        out_channels=out_channels,
+                        feature_size=48,
+                        drop_rate=0.0,
+                        attn_drop_rate=0.0,
+                        dropout_path_rate=0.0,
+                        use_checkpoint=False,
+                        )
+            self.precls_conv = nn.Sequential(
+                nn.GroupNorm(16, 48),
+                nn.ReLU(inplace=True),
+                nn.Conv3d(48, 8, kernel_size=1)
+            )
+            self.GAP = nn.Sequential(
+                nn.GroupNorm(16, 768),
+                nn.ReLU(inplace=True),
+                torch.nn.AdaptiveAvgPool3d((1,1,1)),
+                nn.Conv3d(768, 256, kernel_size=1, stride=1, padding=0)
+            )
         else:
             raise Exception('{} backbone is not implemented in curretn version'.format(backbone))
 
         self.encoding = encoding
 
 
-        weight_nums, bias_nums = [], []
-        weight_nums.append(8*8)
-        weight_nums.append(8*8)
-        weight_nums.append(8*1)
-        bias_nums.append(8)
-        bias_nums.append(8)
-        bias_nums.append(1)
-        self.weight_nums = weight_nums
-        self.bias_nums = bias_nums
-        self.controller = nn.Conv3d(256+256, sum(weight_nums+bias_nums), kernel_size=1, stride=1, padding=0)
+        # weight_nums, bias_nums = [], []
+        # weight_nums.append(8*8)
+        # weight_nums.append(8*8)
+        # weight_nums.append(8*1)
+        # bias_nums.append(8)
+        # bias_nums.append(8)
+        # bias_nums.append(1)
+        # self.weight_nums = weight_nums
+        # self.bias_nums = bias_nums
+        # self.controller = nn.Conv3d(256+256, sum(weight_nums+bias_nums), kernel_size=1, stride=1, padding=0)
+        # if self.encoding == 'rand_embedding':
+        #     self.organ_embedding = nn.Embedding(out_channels, 256)
+        # elif self.encoding == 'word_embedding':
+        #     self.register_buffer('organ_embedding', torch.randn(out_channels, 512))
+        #     self.text_to_vision = nn.Linear(512, 256)
+        # self.class_num = out_channels
+
+        self.weight_nums = [8*8, 8*8, 8*1]
+        self.bias_nums = [8, 8, 1]
+        # self.controller = nn.Conv3d(256+256, sum(self.weight_nums + self.bias_nums), kernel_size=1, stride=1, padding=0)
         if self.encoding == 'rand_embedding':
             self.organ_embedding = nn.Embedding(out_channels, 256)
         elif self.encoding == 'word_embedding':
             self.register_buffer('organ_embedding', torch.randn(out_channels, 512))
-            self.text_to_vision = nn.Linear(512, 256)
+            # self.text_to_vision = nn.Conv3d(768, 512, kernel_size=1, stride=1, padding=0)
         self.class_num = out_channels
+        self.controllers = nn.ModuleList()
+        for iclass in range(self.class_num):
+            self.controllers.append(
+                nn.Sequential(
+                    nn.Conv3d(256, 128, kernel_size=1, stride=1, padding=0),
+                    nn.ReLU(),
+                    nn.Conv3d(128, sum(self.weight_nums + self.bias_nums), kernel_size=1, stride=1, padding=0)
+                )
+            )
 
     def load_params(self, model_dict):
         if self.backbone_name == 'swinunetr':
