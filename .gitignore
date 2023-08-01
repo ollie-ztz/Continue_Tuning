@@ -1,2 +1,3 @@
 pretrained_weights/swin_unetr.base_5000ep_f48_lr2e-4_pretrained.pt
 out
+logs
