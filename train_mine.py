@@ -49,7 +49,7 @@ def train(args, train_loader, model, optimizer, loss_seg_DICE, loss_seg_CE):
         if args.original_label:
             for b in range(B):
                 for c in range(NUM_CLASS):
-                    if c+1 not in TEMPLATE['finetune']:
+                    if c+1 not in TEMPLATE['target']:
                         y[b][c] = 0
         y = merge_organ(args,y,containing_totemplate)
         y = y.to(args.device)
@@ -71,48 +71,48 @@ def train(args, train_loader, model, optimizer, loss_seg_DICE, loss_seg_CE):
     
     return loss_dice_ave/len(epoch_iterator), loss_bce_ave/len(epoch_iterator)
 
-def validation(model, ValLoader, args):
-    model.eval()
-    dice_list = {}
-    for key in TEMPLATE.keys():
-        dice_list[key] = np.zeros((2, NUM_CLASS)) # 1st row for dice, 2nd row for count
-    for index, batch in enumerate(tqdm(ValLoader)):
-        # print('%d processd' % (index))
-        image, label, name = batch["image"].cuda(), batch["post_label"], batch["name"]
-        print(name, image.shape)
-        with torch.no_grad():
-            pred = sliding_window_inference(image, (args.roi_x, args.roi_y, args.roi_z), 1, model)
-            pred_sigmoid = F.sigmoid(pred)
+# def validation(model, ValLoader, args):
+#     model.eval()
+#     dice_list = {}
+#     for key in TEMPLATE.keys():
+#         dice_list[key] = np.zeros((2, NUM_CLASS)) # 1st row for dice, 2nd row for count
+#     for index, batch in enumerate(tqdm(ValLoader)):
+#         # print('%d processd' % (index))
+#         image, label, name = batch["image"].cuda(), batch["label"], batch["name"]
+
+#         with torch.no_grad():
+#             pred = sliding_window_inference(image, (args.roi_x, args.roi_y, args.roi_z), 1, model)
+#             pred_sigmoid = F.sigmoid(pred)
         
-        B = pred_sigmoid.shape[0]
-        for b in range(B):
-            template_key = get_key(name[b])
-            organ_list = TEMPLATE[template_key]
-            for organ in organ_list:
-                dice_organ = dice_score(pred_sigmoid[b,organ-1,:,:,:], label[b,organ-1,:,:,:].cuda())
-                dice_list[template_key][0][organ-1] += dice_organ.item()
-                dice_list[template_key][1][organ-1] += 1
+#         B = pred_sigmoid.shape[0]
+#         for b in range(B):
+#             template_key = get_key(name[b])
+#             organ_list = TEMPLATE[template_key]
+#             for organ in organ_list:
+#                 dice_organ = dice_score(pred_sigmoid[b,organ-1,:,:,:], label[b,organ-1,:,:,:].cuda())
+#                 dice_list[template_key][0][organ-1] += dice_organ.item()
+#                 dice_list[template_key][1][organ-1] += 1
     
-    ave_organ_dice = np.zeros((2, NUM_CLASS))
-    if args.local_rank == 0:
-        with open('out/'+args.log_name+f'/val_{args.epoch}.txt', 'w') as f:
-            for key in TEMPLATE.keys():
-                organ_list = TEMPLATE[key]
-                content = 'Task%s| '%(key)
-                for organ in organ_list:
-                    dice = dice_list[key][0][organ-1] / dice_list[key][1][organ-1]
-                    content += '%s: %.4f, '%(ORGAN_NAME[organ-1], dice)
-                    ave_organ_dice[0][organ-1] += dice_list[key][0][organ-1]
-                    ave_organ_dice[1][organ-1] += dice_list[key][1][organ-1]
-                print(content)
-                f.write(content)
-                f.write('\n')
-            content = 'Average | '
-            for i in range(NUM_CLASS):
-                content += '%s: %.4f, '%(ORGAN_NAME[i], ave_organ_dice[0][organ-1] / ave_organ_dice[1][organ-1])
-            print(content)
-            f.write(content)
-            f.write('\n')
+#     ave_organ_dice = np.zeros((2, NUM_CLASS))
+#     if args.local_rank == 0:
+#         with open('out/'+args.log_name+f'/val_{args.epoch}.txt', 'w') as f:
+#             for key in TEMPLATE.keys():
+#                 organ_list = TEMPLATE[key]
+#                 content = 'Task%s| '%(key)
+#                 for organ in organ_list:
+#                     dice = dice_list[key][0][organ-1] / dice_list[key][1][organ-1]
+#                     content += '%s: %.4f, '%(ORGAN_NAME[organ-1], dice)
+#                     ave_organ_dice[0][organ-1] += dice_list[key][0][organ-1]
+#                     ave_organ_dice[1][organ-1] += dice_list[key][1][organ-1]
+#                 print(content)
+#                 f.write(content)
+#                 f.write('\n')
+#             content = 'Average | '
+#             for i in range(NUM_CLASS):
+#                 content += '%s: %.4f, '%(ORGAN_NAME[i], ave_organ_dice[0][organ-1] / ave_organ_dice[1][organ-1])
+#             print(content)
+#             f.write(content)
+#             f.write('\n')
             
             
 
@@ -161,13 +161,6 @@ def process(args):
     #Load pre-trained weights
     store_dict = model.state_dict()
     store_dict_keys = [key for key, value in store_dict.items()]
-    # checkpoint = torch.load(args.resume)
-    # load_dict = checkpoint['net']
-    # load_dict_value = [value for key, value in load_dict.items()]
-    # # args.epoch = checkpoint['epoch']
-
-    # for i in range(len(store_dict)):
-    #     store_dict[store_dict_keys[i]] = load_dict_value[i]
 
     if args.resume:
         checkpoint = torch.load(args.resume)
@@ -176,13 +169,6 @@ def process(args):
         load_dict_value = [value for key, value in load_dict.items()]
         for i in range(len(store_dict)):
             store_dict[store_dict_keys[i]] = load_dict_value[i]
-        if args.dist:
-            model.load_state_dict(store_dict)
-        else:
-            # store_dict = model.state_dict()
-            # model_dict = checkpoint['net']
-            # for key in model_dict.keys():
-            #     store_dict['.'.join(key.split('.')[1:])] = model_dict[key]
             model.load_state_dict(store_dict)
 
 
@@ -256,12 +242,7 @@ def main():
     parser.add_argument('--lr', default=1e-4, type=float, help='Learning rate')
     parser.add_argument('--weight_decay', default=1e-5, help='Weight Decay')
     ## dataset
-    parser.add_argument('--dataset_list', nargs='+', default=['PAOT_123457891213', 'PAOT_10_inner']) # 'PAOT', 'felix'
-    ### please check this argment carefully
-    ### PAOT: include PAOT_123457891213 and PAOT_10
-    ### PAOT_123457891213: include 1 2 3 4 5 7 8 9 12 13
-    ### PAOT_10_inner: same with NVIDIA for comparison
-    ### PAOT_10: original division
+    parser.add_argument('--dataset_list', nargs='+', default=['PAOT_123457891213', 'PAOT_10_inner']) # 'PAOT', 'felix', 'PAOT_10_inner'
     parser.add_argument('--data_root_path', default='/computenodes/node31/team1/jliu/data/ct_data/', help='data root path')
     parser.add_argument('--data_txt_path', default='./dataset/dataset_list/', help='data txt path')
     parser.add_argument('--batch_size', default=4, type=int,help='batch size')

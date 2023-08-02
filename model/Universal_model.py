@@ -257,10 +257,6 @@ class Universal_model(nn.Module):
             logits_array.append(logits.reshape(1, -1, D, H, W))
         
         logits_array = torch.cat(logits_array,dim=0)
-        # print(out.shape)
-        # if self.training or return_feature:
-        #     return [enc0, enc1, enc2, enc3, dec4, dec3, dec2, dec1, dec0, out, logits_array]
-        # else:
         return logits_array
 
 
