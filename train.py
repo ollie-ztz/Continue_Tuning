@@ -187,10 +187,10 @@ def process(args):
 
 
             
-        # Becareful, the optimizer should be loaded after the model
-        # optimizer.load_state_dict(checkpoint['optimizer'])
+        # #Becareful, the optimizer should be loaded after the model
+        optimizer.load_state_dict(checkpoint['optimizer'])
         args.epoch = checkpoint['epoch']
-        # scheduler.load_state_dict(checkpoint['scheduler'])
+        scheduler.load_state_dict(checkpoint['scheduler'])
         
         print('success resume from ', args.resume)
 
