@@ -132,6 +132,15 @@ def process(args):
                     backbone=args.backbone,
                     encoding=args.trans_encoding
                     )
+    # define the non-frozen-layers
+    if args.use_freeze:
+        layers_to_not_frozen = ['controllers4','controllers7','controllers8','controllers9']
+        for name, param in model.named_parameters():
+            if any(layer in name for layer in layers_to_not_frozen):
+                param.requires_grad = True
+            else:
+                param.requires_grad = False
+
     #Load pre-trained weights
     if args.pretrain is not None:
         model.load_params(torch.load(args.pretrain)["state_dict"])
@@ -149,8 +158,8 @@ def process(args):
     # criterion and optimizer
     loss_seg_DICE = loss.DiceLoss(num_classes=NUM_CLASS).to(args.device)
     loss_seg_CE = loss.Multi_BCELoss(num_classes=NUM_CLASS).to(args.device)
-    if args.backbone == 'unetpp':
-        optimizer = torch.optim.SGD(model.parameters(), lr=1e-3, momentum=0.9,
+    if args.use_freeze:
+        optimizer = torch.optim.SGD(filter(lambda p: p.requires_grad, model.parameters()), lr=1e-3, momentum=0.9,
                               nesterov=False, weight_decay=1e-4)
     else:
         optimizer = torch.optim.AdamW(model.parameters(), lr=args.lr, weight_decay=args.weight_decay)
@@ -161,13 +170,6 @@ def process(args):
     #Load pre-trained weights
     store_dict = model.state_dict()
     store_dict_keys = [key for key, value in store_dict.items()]
-    # checkpoint = torch.load(args.resume)
-    # load_dict = checkpoint['net']
-    # load_dict_value = [value for key, value in load_dict.items()]
-    # # args.epoch = checkpoint['epoch']
-
-    # for i in range(len(store_dict)):
-    #     store_dict[store_dict_keys[i]] = load_dict_value[i]
 
     if args.resume:
         checkpoint = torch.load(args.resume)
@@ -176,16 +178,7 @@ def process(args):
         load_dict_value = [value for key, value in load_dict.items()]
         for i in range(len(store_dict)):
             store_dict[store_dict_keys[i]] = load_dict_value[i]
-        if args.dist:
-            model.load_state_dict(store_dict)
-        else:
-            # store_dict = model.state_dict()
-            # model_dict = checkpoint['net']
-            # for key in model_dict.keys():
-            #     store_dict['.'.join(key.split('.')[1:])] = model_dict[key]
-            model.load_state_dict(store_dict)
-
-
+        model.load_state_dict(store_dict)
             
         # #Becareful, the optimizer should be loaded after the model
         # optimizer.load_state_dict(checkpoint['optimizer'])
@@ -257,11 +250,6 @@ def main():
     parser.add_argument('--weight_decay', default=1e-5, help='Weight Decay')
     ## dataset
     parser.add_argument('--dataset_list', nargs='+', default=['PAOT_123457891213', 'PAOT_10_inner']) # 'PAOT', 'felix'
-    ### please check this argment carefully
-    ### PAOT: include PAOT_123457891213 and PAOT_10
-    ### PAOT_123457891213: include 1 2 3 4 5 7 8 9 12 13
-    ### PAOT_10_inner: same with NVIDIA for comparison
-    ### PAOT_10: original division
     parser.add_argument('--data_root_path', default='/computenodes/node31/team1/jliu/data/ct_data/', help='data root path')
     parser.add_argument('--data_txt_path', default='./dataset/dataset_list/', help='data txt path')
     parser.add_argument('--batch_size', default=4, type=int,help='batch size')
@@ -288,6 +276,7 @@ def main():
     parser.add_argument('--cache_rate', default=0.005, type=float, help='The percentage of cached data in total')
     parser.add_argument('--internal_organ', default=True , type=bool, help='Ourdata or internal organ')
     parser.add_argument('--original_label',action="store_true",default=False,help='whether use original label')
+    parser.add_argument('--use_freeze',action="store_true",default=False,help='whether use freeze')
 
     args = parser.parse_args()
     
