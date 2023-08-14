@@ -49,7 +49,7 @@ def train(args, train_loader, model, optimizer, loss_seg_DICE, loss_seg_CE):
         if args.original_label:
             for b in range(B):
                 for c in range(NUM_CLASS):
-                    if c+1 not in TEMPLATE['finetune']:
+                    if c+1 not in TEMPLATE['target']:
                         y[b][c] = 0
         y = merge_organ(args,y,containing_totemplate)
         y = y.to(args.device)
