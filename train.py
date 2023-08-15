@@ -134,13 +134,15 @@ def process(args):
                     )
     # define the non-frozen-layers
     if args.use_freeze:
-        layers_to_not_frozen = ['controllers4','controllers7','controllers8','controllers9']
+        layers_to_not_frozen = ['controllers.3.0.weight','controllers.3.0.bias','controllers.3.2.weight','controllers.3.2.bias',
+                                'controllers.6.0.weight','controllers.6.0.bias','controllers.6.2.weight','controllers.6.2.bias',
+                                'controllers.7.0.weight','controllers.7.0.bias','controllers.7.2.weight','controllers.7.2.bias',
+                                'controllers.8.0.weight','controllers.8.0.bias','controllers.8.2.weight','controllers.8.2.bias']
         for name, param in model.named_parameters():
             if any(layer in name for layer in layers_to_not_frozen):
                 param.requires_grad = True
             else:
                 param.requires_grad = False
-
     #Load pre-trained weights
     if args.pretrain is not None:
         model.load_params(torch.load(args.pretrain)["state_dict"])
