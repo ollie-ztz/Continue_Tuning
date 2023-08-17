@@ -137,12 +137,14 @@ def process(args):
         layers_to_not_frozen = ['controllers.3.0.weight','controllers.3.0.bias','controllers.3.2.weight','controllers.3.2.bias',
                                 'controllers.6.0.weight','controllers.6.0.bias','controllers.6.2.weight','controllers.6.2.bias',
                                 'controllers.7.0.weight','controllers.7.0.bias','controllers.7.2.weight','controllers.7.2.bias',
-                                'controllers.8.0.weight','controllers.8.0.bias','controllers.8.2.weight','controllers.8.2.bias']
+                                'controllers.8.0.weight','controllers.8.0.bias','controllers.8.2.weight','controllers.8.2.bias'
+                                ]
         for name, param in model.named_parameters():
             if any(layer in name for layer in layers_to_not_frozen):
                 param.requires_grad = True
             else:
                 param.requires_grad = False
+
     #Load pre-trained weights
     if args.pretrain is not None:
         model.load_params(torch.load(args.pretrain)["state_dict"])
@@ -161,8 +163,7 @@ def process(args):
     loss_seg_DICE = loss.DiceLoss(num_classes=NUM_CLASS).to(args.device)
     loss_seg_CE = loss.Multi_BCELoss(num_classes=NUM_CLASS).to(args.device)
     if args.use_freeze:
-        optimizer = torch.optim.SGD(filter(lambda p: p.requires_grad, model.parameters()), lr=1e-3, momentum=0.9,
-                              nesterov=False, weight_decay=1e-4)
+        optimizer = torch.optim.AdamW(filter(lambda p: p.requires_grad, model.parameters()), lr=args.lr, weight_decay=args.weight_decay)
     else:
         optimizer = torch.optim.AdamW(model.parameters(), lr=args.lr, weight_decay=args.weight_decay)
 

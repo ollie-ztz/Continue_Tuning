@@ -58,11 +58,6 @@ def validation(model, ValLoader, val_transforms, args):
                 shutil.copy(lbl_file_path, destination_lbl)
                 print("Label File copied successfully.")
             affine_temp = nib.load(destination_ct).affine
-
-            print(image_file_path)
-            print(lbl_file_path)
-            print(image.shape)
-            print(name_img)
         else:
             image,name_img = batch["image"].cuda(),batch["name_img"]
             image_file_path = os.path.join(args.data_root_path,name_img[0] +'.nii.gz')
@@ -73,9 +68,7 @@ def validation(model, ValLoader, val_transforms, args):
             organ_seg_save_path = os.path.join(save_dir,name_img[0].split('/')[0],name_img[0].split('/')[-1],'backbones',args.backbone,'segmentations')
             organ_entropy_save_path = os.path.join(save_dir,name_img[0].split('/')[0],name_img[0].split('/')[-1],'backbones',args.backbone,'entropy')
             organ_soft_pred_save_path = os.path.join(save_dir,name_img[0].split('/')[0],name_img[0].split('/')[-1],'backbones',args.backbone,'soft_pred')
-            print(image_file_path)
-            print(image.shape)
-            print(name_img)
+
             destination_ct = os.path.join(case_save_path,'ct.nii.gz')
             if not os.path.isfile(destination_ct):
                 shutil.copy(image_file_path, destination_ct)
