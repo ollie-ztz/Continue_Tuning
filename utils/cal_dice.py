@@ -10,13 +10,13 @@ import pandas as pd
 def main():
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('--data_path', default='/mnt/tiezheng/continue_learning_data/08_unet/350', help='The path of your data')
+    parser.add_argument('--data_path', default='/mnt/tiezheng/continue_learning_data/08_onehot_part/350', help='The path of your data')
     #/mnt/tiezheng/continue_learning_data/08_R1_after_part/260
     parser.add_argument('--dataset_name', default='14_FELIX', help='The dataset name for generating')
     parser.add_argument('--organs', nargs='+', default=['liver','kidney_right','spleen','pancreas','aorta','postcava',
                        'adrenal_gland_right','adrenal_gland_left','gall_bladder','stomach','duodenum','kidney_left','colon'], help='folder to filter the files(img,train,imagesTr)')
-    parser.add_argument('--backbone', default='unet', help='backbone [swinunetr or unet]')
-    parser.add_argument('--out', default='/data2/tzhang/continue_learning/CLIP_Based_Continue_Learning/Dice_record/unet_onehot')
+    parser.add_argument('--backbone', default='swinunetr_onehot', help='backbone [swinunetr or unet]')
+    parser.add_argument('--out', default='/data2/tzhang/continue_learning/CLIP_Based_Continue_Learning/Dice_record/sw_onehot')
     parser.add_argument('--save_file', default='dice_350.txt')
     parser.add_argument('--ground_truth', default = {'aorta':1,'adrenal_gland_right':2,'adrenal_gland_left':2,'colon':6,'duodenum':7,'gall_bladder':8,'postcava':9,
                     'kidney_left':10,'kidney_right':11,'liver':12,'pancreas':13,'spleen':18,'stomach':19})
