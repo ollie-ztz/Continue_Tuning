@@ -30,6 +30,28 @@ from optimizers.lr_scheduler import LinearWarmupCosineAnnealingLR
 
 torch.multiprocessing.set_sharing_strategy('file_system')
 
+# def find_layers(args,train_loader):
+#     all_layers_to_not_frozen = args.all_layers_to_not_frozen
+#     layers_to_not_frozen = []
+#     for batch in train_loader:
+#         x, lbl, name = batch["image"].to(args.device), batch["label"].float(), batch['name']
+#         B, C, W, H, D = lbl.shape
+#         y = torch.zeros(B,NUM_CLASS,W,H,D)
+#         for b in range(B):
+#             for src,tgt in enumerate(TEMPLATE['all']):
+#                 y[b][src][lbl[b][0]==tgt] = 1
+#         if args.original_label:
+#             for b in range(B):
+#                 for c in range(NUM_CLASS):
+#                     if c+1 not in TEMPLATE['target']:
+#                         y[b][c] = 0
+#         layers_id = torch.unique(torch.where(y==1)[1]).numpy() - 1
+#         for i in layers_id:
+#             for layers in all_layers_to_not_frozen:
+#                 if str(i) in layers:
+#                     layers_to_not_frozen.append(layers)
+#     return layers_to_not_frozen
+            
 
 def train(args, train_loader, model, optimizer, loss_seg_DICE, loss_seg_CE):
     model.train()
@@ -49,7 +71,7 @@ def train(args, train_loader, model, optimizer, loss_seg_DICE, loss_seg_CE):
         if args.original_label:
             for b in range(B):
                 for c in range(NUM_CLASS):
-                    if c+1 not in TEMPLATE['finetune_com']:
+                    if c+1 not in TEMPLATE['target']:
                         y[b][c] = 0
         y = merge_organ(args,y,containing_totemplate)
         y = y.to(args.device)
@@ -280,6 +302,11 @@ def main():
     parser.add_argument('--internal_organ', default=True , type=bool, help='Ourdata or internal organ')
     parser.add_argument('--original_label',action="store_true",default=False,help='whether use original label')
     parser.add_argument('--use_freeze',action="store_true",default=False,help='whether use freeze')
+    parser.add_argument('--all_layers_to_not_frozen',default=['controllers.3.0.weight','controllers.3.0.bias','controllers.3.2.weight','controllers.3.2.bias',
+                                'controllers.6.0.weight','controllers.6.0.bias','controllers.6.2.weight','controllers.6.2.bias',
+                                'controllers.7.0.weight','controllers.7.0.bias','controllers.7.2.weight','controllers.7.2.bias',
+                                'controllers.8.0.weight','controllers.8.0.bias','controllers.8.2.weight','controllers.8.2.bias'
+                                ],help='which layers to not frozen')
 
     args = parser.parse_args()
     

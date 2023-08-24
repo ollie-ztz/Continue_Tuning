@@ -45,15 +45,30 @@
 import os
 import numpy as np
 from tqdm import tqdm
-txt = []
-path = '/mnt/tiezheng/continue_learning_data/asssemeble_data/08_AbdomenCT-1K'
-files_list = os.listdir(path)
-for file in tqdm(files_list):
-    if 'pseudo_part_label.nii.gz' in os.listdir(os.path.join(path,file)):
-        line = os.path.join(file,'ct.nii.gz') + '\t' + os.path.join(file,'pseudo_label.nii.gz')
-        txt.append(line)
-txt = sorted(txt)
-with open('Full_label_all.txt','w') as f:
-    for line in txt:
-        f.write(line+'\n')
 
+path = '/mnt/tiezheng/continue_learning_data/08_Swinonehot_R2'
+epoch = '440'
+dataset_name = '14_FELIX'
+files_list = os.listdir(os.path.join(path,epoch,dataset_name))
+
+txt_path = '/data2/tzhang/continue_learning/CLIP_Based_Continue_Learning/dataset/dataset_list/dice_14.txt'
+txt = []
+with open(txt_path,'r') as file:
+    lines = file.readlines()
+    for line in lines:
+        line = line.strip()
+        line = line.split('\t')
+        txt.append(line[0].split('/')[-1][:-7])
+txt = np.unique(txt)
+# 14_FELIX/img/FELIX5056_VENOUS.nii.gz	14_FELIX/label/FELIX5056_VENOUS.nii.gz
+lines = []
+for f in tqdm(txt):
+    if f in files_list:
+        continue
+    else:
+        line = os.path.join(dataset_name,'img',f+'.nii.gz')+'\t'+ os.path.join(dataset_name,'label'+f+'.nii.gz')
+        lines.append(line)
+with open('/data2/tzhang/continue_learning/CLIP_Based_Continue_Learning/dataset/dataset_list/Missing_440.txt','w') as file:
+    for line in lines:
+        file.write(line+'\n')
+    file.close()
