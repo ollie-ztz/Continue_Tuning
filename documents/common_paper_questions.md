@@ -48,3 +48,9 @@
     | AbdomenCT-1K | 1,112 | 4 | No | CC BY 4.0 |
     | TotalSegmentator | 1,204 | 104 | No | CC BY 4.0 |
     | AbdomenAtlas-8K | 8,448 | 8 | Yes | pending |
+* ### In addition, since the active learning procedure is one of the key contributions, I expected to see an improvement after its use. However, in **revised** Table 5 (supplementary), the improvement on JHH, the improvement with respect to mDice and mNSD is typically 1-2 points, within the standard deviation for each of the 9 organs and average. Additional information about the utility of the dataset needs to be provided, and whether the provided labels are better than the existing partial labels.
+    Table 5 (supplementary) only showed the improvement from Step 0 to Step 1 of the active learning procedure, instead of presenting the full improvement before and after using our active learning procedure. We appreciate your valuable feedback and have made several revisions to this table.
+    
+    1. We added the improvement of Step 2 in the active learning procedure. Compared to the results in step 0, both mDSC and mNSD show substantial improvement, confirming the effectiveness of our active learning procedure. 
+    2. We marked the revised classes at each Step. The segmentation performance of some organs were marginally improved simply because (1) these organs were hardly revised at certain Steps or (2) the segmentation performance was already very high (e.g., DSC > 90%). For those revised organs (e.g., aorta), AI models showed a significant improvement from 72.3% to 82.9%. 
+
