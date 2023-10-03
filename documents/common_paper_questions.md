@@ -90,9 +90,11 @@ A11: The dataset will be made publicly available once the paper has been accepte
 * ### Whether the annotation procedures across hospitals or annotators may differ (e.g., due to training levels or other factors), and how this may positively or negatively affect performance.
     Consistency and accuracy are of utmost importance in medical data annotation. However, in the real world, variations in annotation procedures can occur across hospitals, laboratories, or individual annotators. When creating AbdomenAtlas-8K, we observed the variations in annotation procedures across 26 hospitals in our study. Two factors could cause these variations based on our observation.
     1. **Different scanning body range.** An illustrative instance is the aorta, an elongated anatomical structure traversing both the thoracic and abdominal cavities. Notably, its morphology exhibits significant differences between these distinct anatomical regions. For abdominal CT scans, in general, the aortic arch in the chest region is typically not scanned. However, due to variations in the scanning range of CT scans across different hospitals, some CT scans also include and annotate the aortic arch. As a result, the standard annotation for the same organ provided by different hospitals varies significantly. 
-    2. **Different annotation protocols across hospitals.** For example, the stomach and duodenum often have blurry boundaries, posing a challenge in distinguishing between these two organs. Different hospitals typically adhere to varying annotation protocols, which can further complicate the learning process for our AI model.\\
+    2. **Different annotation protocols across hospitals.** For example, the stomach and duodenum often have blurry boundaries, posing a challenge in distinguishing between these two organs. Different hospitals typically adhere to varying annotation protocols, which can further complicate the learning process for our AI model.
+
     **Positive impact to AI training:**
-    - Variability to some extent could enhance the robustness of AI models. If a model is trained on a diverse set of annotations from different sources, it might be better equipped to generalize to novel data.\\
+    - Variability to some extent could enhance the robustness of AI models. If a model is trained on a diverse set of annotations from different sources, it might be better equipped to generalize to novel data.
+    
     **Negative impact to AI training:**
     - AI models trained on inconsistent annotations could produce unreliable or unpredictable outcomes. As a result, it might be challenging to reproduce AI predictions across different hospitals if there's significant variability in the source annotations.
 
