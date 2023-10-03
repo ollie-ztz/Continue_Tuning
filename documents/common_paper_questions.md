@@ -4,7 +4,7 @@
     * ##### Questions about the metrics in the paper
     * ##### Questions about the figures in the paper
     * ##### Questions about the annotators in the paper
-
+    * ##### Questions about the approaches in the paper
 ## Questions about the datasets
 * ### Contributions and applications of AbdomenAtlas-8K.
     Two contributions: A large-scale dataset of 8,448 annotated CT volumes and an active learning procedure that can quickly create many other large-scale datasets. Firstly, AbdomenAtlas-8K was a composite dataset that unified medical datasets from at least 26 different hospitals worldwide. In total, more than 60.6 x 10<sup>9</sup> voxels were annotated in AbdomenAtlas-8K in comparison with 4.3 x 10<sup>9</sup> voxels annotated in the existing public datasets. We scaled up the organ annotation by a factor of 15. Once released, AbdomenAtlas-8K can be used to benchmark existing segmentation models and foster medical foundation models for a range of downstream applications. Secondly, the proposed active learning procedure can generate an attention map to highlight the regions to be revised by radiologists, reducing the annotation time from 30.8 years to three weeks. This strategy can scale up annotations quickly for creating medical datasets or even natural imaging datasets.
@@ -74,7 +74,7 @@
     We used commercial software called [Pair](https://aipair.com.cn/) to perform annotation reviews and revisions, as specified in footnote #4. Acquiring this software requires purchasing a license for each individual user. Subsequently, we discovered that [MONAI-LABEL](https://monai.io/label.html) is also a very useful tool for the annotation task. 
 * ### The JHH dataset is referred to without defining what it is.
     The JHH dataset is a proprietary, multi-resolution, multi-phase collected from Johns Hopkins Hospital. In the updated paper, we have provided a more comprehensive clarification of the JHH dataset. 
-* ### Pseudo labels" should be defined.
+* ### "Pseudo labels" should be defined.
     Pseudo labels refer to organ labels predicted by AI models without any additional revision or validation by human annotators. We have now clarified this term in the revised paper.
 
 ## Questions about the metrics  in the paper
@@ -101,6 +101,21 @@
     | Aorta | 27.4 | 20.4 | 0.99 |
     | Postcava (IVC) | 18.8 | 20.8 | 0.99 |
     | Pancreas | 18.5 | 24.0 | 0.99 |
+
+* ### But the priority list is computed by the algorithm itself, so there’s no guarantee that the remaining 92.5% are correct. I could think of multiple failure cases, where the proposed attention map score is “incorrectly” predicting no error, e.g. because the image is seemingly easy for all three DL models but contains an important abnormality.
+     It is true that the remaining 92.5% have a potentially important abnormality in all three models. Our solutions are in two dimensions:
+    1. **Quickly review the entire dataset**. Two junior radiologists (3-year experience) were responsible for looking through the entire AbdomenAtlas-8K once the active learning procedure was completed. The radiologists would make a revision if the labels were incorrect, but such revisions were seldom required, with only 55 out of 8,448 instances needing adjustments. This strategy guaranteed the automated AI annotation quality in the remaining 92.5%.
+    2. **Enrich the AI architectures used for dataset construction**. We plan to unify segmentations predicted by more AI architectures. This strategy can significantly attenuate the prediction errors made by specific AI architectures in the remaining 92.5%.
+* ### The comparison of training with this new dataset compared to previous partially labelled ones in Appendix A does not show a higher Dice 90.3 vs 90.4% and no statistical tests demonstrate the usefulness of this expanded dataset.
+    The marginal improvement in the FLARE’23 dataset can be due to many reasons. For example, the performance of the eight specific organs is already very high (DSC > 90%) and training with more annotations may not yield significant returns. 
+    Moreover, we also recognized that limiting our evaluation exclusively to the FLARE'23 dataset may not provide a comprehensive assessment, as its small sample size (*N* = 300) may not present the full spectrum of different domains. To improve, we have evaluated the trained models on two additional (unseen) datasets with larger sample sizes (*N*): TotalSegmentator (*N* = 1,204) and JHH (*N* = 5,281). Following your suggestion, we have conducted a statistical analysis of the comparison. The mean, standard deviation, and *p*-value are reported in the revised Table 6. We obtained a more noticeable benefit from a larger scale evaluation when training AI models on AbdomenAtlas-8K over the previously partially labeled ones.
+* ### You may consider the amount of revisions made by each organ, and reporting these statistics, or otherwise clarifying that some organs are harder to segment than others.
+    We have reported the amount of revisions by highlighting the two most significantly revised classes (i.e., aorta and postcava) at each step in blue in Appendix Table 5. These two organs have consistently shown a steady rise in mDSC during the active learning procedure. Specifically, the aorta increased from 72.3% to 83.7%, and the postcava improved from 76.1% to 78.6%.
+
+    In addition, some organs are harder to segment than others due to two reasons.
+
+    1. **Diverse annotation protocols.** As mentioned in A2, there are often varying annotation protocols for the aorta among different hospitals. Consequently, achieving precise segmentation with our AI models becomes a challenging task. This often requires frequent revisions of aorta annotations by our annotators. The improvement of aorta annotations through the active learning procedure is illustrated in Table 5. Notably, there is a substantial increase in mDSC, from 72.3% to 83.7%, after undergoing two steps of active learning procedure.
+    2. **Blurry organ boundary.** Organs such as the pancreas often exhibit blurry boundaries, presenting a challenge for both AI and human annotations. Consequently, there is no observed improvement in annotation performance for such organs even after two steps of our active learning procedure.
 
 ## Questions about the figures in the paper
 * ### In Figure 3 (manuscript), the authors report visualizations of the sums of attention maps of each organ. The intention of the experiment and the choice of the 5% threshold was unclear.
@@ -141,16 +156,7 @@
     - AI models trained on inconsistent annotations could produce unreliable or unpredictable outcomes. As a result, it might be challenging to reproduce AI predictions across different hospitals if there's significant variability in the source annotations.
 
 
-
-
-
-
-* ### But the priority list is computed by the algorithm itself, so there’s no guarantee that the remaining 92.5% are correct. I could think of multiple failure cases, where the proposed attention map score is “incorrectly” predicting no error, e.g. because the image is seemingly easy for all three DL models but contains an important abnormality.
-     It is true that the remaining 92.5% have a potentially important abnormality in all three models. Our solutions are in two dimensions:
-    1. **Quickly review the entire dataset**. Two junior radiologists (3-year experience) were responsible for looking through the entire AbdomenAtlas-8K once the active learning procedure was completed. The radiologists would make a revision if the labels were incorrect, but such revisions were seldom required, with only 55 out of 8,448 instances needing adjustments. This strategy guaranteed the automated AI annotation quality in the remaining 92.5%.
-    2. **Enrich the AI architectures used for dataset construction**. We plan to unify segmentations predicted by more AI architectures. This strategy can significantly attenuate the prediction errors made by specific AI architectures in the remaining 92.5%.
-
-## Response for one reviewer
+## Questions about the approaches in the paper
 * ### The generalisability of the approach to other organs and imaging modalities is only mentioned briefly at the end of the conclusion. Some further discussion on the feasibility of this and the work that would be involved to adapt the software would be useful.
     We have undertaken several explorations to assess the generalisability of our approach, as outlined below.
     1. **Generalisability to other organs/tumors.** After the paper was submitted, we continued to annotate 13 additional organs and vessels. (e.g., esophagus, portal vein and splenic vein, adrenal gland, duodenum, hepatic vessel, lung, colon, intestine, rectum, bladder, prostate, head of femur, and celiac trunk.), and different types of tumors (e.g., kidney tumor, liver tumor, pancreas tumor, hepatic vessel tumor, lung tumor, colon tumor, and kidney cyst). Leveraging our proposed approach can significantly accelerate the annotation of various anatomical structures. However, annotating more types of tumors remains challenging if solely using our approach; even human experts may face uncertainty in tumor annotation, particularly in the early stages of the disease. Consequently, further research is warranted. This could entail incorporating additional data sources such as radiology reports, biopsy results, and patient demographic information into the tumor annotation.
@@ -158,13 +164,4 @@
     3. **Adapt to the software.** Our active learning procedure is being integrated into open-source software such as [MONAI-LABEL](https://monai.io/label.html) at NVIDIA and [ChimeraX](https://www.cgl.ucsf.edu/chimerax/) at UCB/UCSF.
 * ### The authors correctly point out that one of the limitations of the approach is evaluating the proposed methodology with respect to disease (e.g., when tumors are present). It would also be important to highlight that the algorithm used in the active learning step is supervised, therefore, any label biases from labels in the training datasets may potentially be propagated into the labeling of the new data.
     Indeed, as discussed in our limitation section, tumor annotation is much more challenging than organ annotation. It is true that when annotators make mistakes on tumor annotations, it will also propagate the AI training and predicting along the supervised active learning procedure. As an extension of this study, we will add tumor annotations to the AbdomenAtlas-8K  dataset by addressing the challenge in two possible directions. **Firstly**, we plan to recruit more experienced radiologists to revise tumor annotations. **Secondly**, we will incorporate the radiology reports (based on biopsy results) into the human revision. These actions can reduce potential label biases and label errors from human annotators.
-* ### You may consider the amount of revisions made by each organ, and reporting these statistics, or otherwise clarifying that some organs are harder to segment than others.
-    We have reported the amount of revisions by highlighting the two most significantly revised classes (i.e., aorta and postcava) at each step in blue in Appendix Table 5. These two organs have consistently shown a steady rise in mDSC during the active learning procedure. Specifically, the aorta increased from 72.3% to 83.7%, and the postcava improved from 76.1% to 78.6%.
 
-    In addition, some organs are harder to segment than others due to two reasons.
-
-    1. **Diverse annotation protocols.** As mentioned in A2, there are often varying annotation protocols for the aorta among different hospitals. Consequently, achieving precise segmentation with our AI models becomes a challenging task. This often requires frequent revisions of aorta annotations by our annotators. The improvement of aorta annotations through the active learning procedure is illustrated in Table 5. Notably, there is a substantial increase in mDSC, from 72.3% to 83.7%, after undergoing two steps of active learning procedure.
-    2. **Blurry organ boundary.** Organs such as the pancreas often exhibit blurry boundaries, presenting a challenge for both AI and human annotations. Consequently, there is no observed improvement in annotation performance for such organs even after two steps of our active learning procedure.
-* ### The comparison of training with this new dataset compared to previous partially labelled ones in Appendix A does not show a higher Dice 90.3 vs 90.4% and no statistical tests demonstrate the usefulness of this expanded dataset.
-    The marginal improvement in the FLARE’23 dataset can be due to many reasons. For example, the performance of the eight specific organs is already very high (DSC > 90%) and training with more annotations may not yield significant returns. 
-    Moreover, we also recognized that limiting our evaluation exclusively to the FLARE'23 dataset may not provide a comprehensive assessment, as its small sample size (*N* = 300) may not present the full spectrum of different domains. To improve, we have evaluated the trained models on two additional (unseen) datasets with larger sample sizes (*N*): TotalSegmentator (*N* = 1,204) and JHH (*N* = 5,281). Following your suggestion, we have conducted a statistical analysis of the comparison. The mean, standard deviation, and *p*-value are reported in the revised Table 6. We obtained a more noticeable benefit from a larger scale evaluation when training AI models on AbdomenAtlas-8K over the previously partially labeled ones.
