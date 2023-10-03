@@ -1,6 +1,6 @@
 ## FAQ
 * #### FAQ
-    * ##### Questions about the datasets
+    * ##### Questions about the datasets in the paper
     * ##### Questions about the metrics in the paper
     * ##### Questions about the figures in the paper
     * ##### Questions about the annotators in the paper
