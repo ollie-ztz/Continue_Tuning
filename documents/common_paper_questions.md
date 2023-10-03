@@ -1,6 +1,6 @@
 ## FAQ
 * #### FAQ
-    * ##### Common questions
+    * ##### Common questions <span style="margin-bottom: -10px;"> </span>
     * ##### Responses for one reviewer
     * ##### Responses for one reviewer
     * ##### Responses for one reviewer
