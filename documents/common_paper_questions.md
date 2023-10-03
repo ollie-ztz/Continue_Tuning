@@ -94,9 +94,22 @@ A11: The dataset will be made publicly available once the paper has been accepte
 
     **Positive impact to AI training:**
     - Variability to some extent could enhance the robustness of AI models. If a model is trained on a diverse set of annotations from different sources, it might be better equipped to generalize to novel data.
-    
+
     **Negative impact to AI training:**
     - AI models trained on inconsistent annotations could produce unreliable or unpredictable outcomes. As a result, it might be challenging to reproduce AI predictions across different hospitals if there's significant variability in the source annotations.
+* ### You may consider the amount of revisions made by each organ, and reporting these statistics, or otherwise clarifying that some organs are harder to segment than others.
+    We have reported the amount of revisions by highlighting the two most significantly revised classes (i.e., aorta and postcava) at each step in blue in Appendix Table 5. These two organs have consistently shown a steady rise in mDSC during the active learning procedure. Specifically, the aorta increased from 72.3% to 83.7%, and the postcava improved from 76.1% to 78.6%.
+
+    In addition, some organs are harder to segment than others due to two reasons.
+
+    1. **Diverse annotation protocols.** As mentioned in A2, there are often varying annotation protocols for the aorta among different hospitals. Consequently, achieving precise segmentation with our AI models becomes a challenging task. This often requires frequent revisions of aorta annotations by our annotators. The improvement of aorta annotations through the active learning procedure is illustrated in Table 5. Notably, there is a substantial increase in mDSC, from 72.3% to 83.7%, after undergoing two steps of active learning procedure.
+    2. **Blurry organ boundary.** Organs such as the pancreas often exhibit blurry boundaries, presenting a challenge for both AI and human annotations. Consequently, there is no observed improvement in annotation performance for such organs even after two steps of our active learning procedure.
+* ### Figure 3 (Attention). I still do not quite understand the result. The y-axis is the sum of attention, while the caption talks about attention volume (please clarify whether these are the same). It may help augmenting Figure 3 (which explains attention), with a graphical visualization of components. I was also curious whether attention can be generated using one architecture but with different initializations at training. It seems like a useful tool to measure model uncertainty.
+    The “sum of attention” in the y-axis title and “attention size” in the caption are the same. Thank you for pointing this out. We have revised Figure 3 and its caption to make the terms consistent.
+
+    1. **Graphical visualization of components.** Sorry that we are not completely clear about the “component” that you were referring to. If you're referring to each organ in the attention map, please see Figure 2 and Appendix Figure 11 for the visualization. If this isn't what you had in mind, please provide further clarification on the “components”, and we'll be happy to make improvements to Figure 3. Many thanks!
+
+    2. **Whether attention can be generated using one architecture but with different initializations at training**. Yes, this is also a great approach to generate attention maps by using a single AI architecture with different weight initialization.
 
 
 
