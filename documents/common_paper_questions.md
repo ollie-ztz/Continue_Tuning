@@ -2,7 +2,7 @@
 * #### FAQ
     * ##### Common questions
     * ##### Comparsions of datasets and applications/potentials of our dataset for future research
-    * ##### Responses for one reviewer
+    * ##### Issues with contribution and what constitutes the released dataset
     * ##### Responses for one reviewer
     * ##### Responses for one reviewer
 ## Common questions
@@ -33,4 +33,18 @@
     We showcased one of the most pressing applications—early detection and localization of pancreatic cancer, an extremely deadly disease, with a 5-year relative survival rate of only 12% in the United States. The AI trained on a large, private dataset at Johns Hopkins Hospital (JHH), performed arguably higher than typical radiologists [[Xia et al., medRxiv 2022](https://www.medrxiv.org/content/10.1101/2022.09.24.22280071v1)]. But this AI model and annotated dataset were inaccessible due to the many policies. Now, our paper demonstrated that using AbdomenAtlas-8K (100% made up of publicly accessible CT volumes), AI can achieve similar performance when directly tested on the JHH dataset (see Table 2). This study is a concrete demonstration of how AbdomenAtlas-8K can be used to train AI models that can be generalized to many CT volumes from novel hospitals and be adapted to address a range of clinical problems.
 
     [Follow-up Plans] Upon the dataset's release, we aim to host international competitions in 2024, addressing the challenges in multi-organ and multi-tumor segmentation at scale via platforms such as MICCAI/RSNA/Grand Challenge. Additionally, we are in the process of launching special issues about scaling datasets, annotations, and algorithms in leading medical imaging journals such as MEDIA and TMI.
+## Issues with Contribution and What Constitutes the Released Dataset
+* ### The contribution seems to be the release and the improvement of labels for the public datasets, which have previously been released. It does not appear that this is a novel dataset, rather, a release of improved data labels on existing datasets. It was not immediately clear to me that the proposed labels offered more accurate information over existing labels.
+    It is true that we did not introduce new CT volumes. After summarizing the existing public datasets (see Table 3), we found that a combination of these datasets is fairly large (a total of 8,000 CT volumes and many more are coming over the years). The main challenge, however, is the absence of comprehensive annotations. In fact, scaling up annotations is much harder than scaling up CT volumes due to the limited time of expert radiologists. Our contribution is, therefore, significant, covering two major perspectives.
+    1. **More comprehensive annotations.** We provide per-pixel annotations for eight organs across over 8000 CT volumes, encompassing various phases and diverse populations. The existing labels of the public datasets are partial and incomplete, e.g., LiTS only had labels for the liver and liver tumors, and KiTS only had labels for the kidneys and kidney tumors. Our AbdomenAtlas-8K offered detailed annotations for all eight organs within each CT volume. As praised by reviewer nhxF: *“As currently the largest dataset, the work significantly contributed to the field of abdominal CT imaging and can serve as the basis of the development of effective AI algorithms in the future.”*
+    2. **A fast procedure to annotate CT volumes at scale.** Our active learning procedure enables us to accomplish the task within three weeks, a remarkable contrast to the conventional manual annotation approach, which typically requires about 30.8 years. This accelerates the annotation process by an impressive factor of 533. The majority of the annotation workload is managed solely by only one radiologist. Furthermore, this strategy also allows us to efficiently annotate a wider range of organs and tumors in the future.
+    3. [Minor] **Novel dataset.** We have applied our active learning procedure to creating a large private dataset (JHH) of 5,281 novel CT volumes with per-voxel annotations. However, at the moment, we cannot guarantee that this dataset can be released soon due to numerous regulatory constraints. We are actively working with Johns Hopkins Hospital to expedite its potential release. This has been clarified in our introduction: “we commit to releasing 3,410 of the 8,448 CT volumes.”
+* ### In any case, the source and permissions to release data needs to be clarified and provided. Information of the data reuse from previous datasets need to be clarified.
+    We have now elaborated on the source and permissions in Table 3 (supplementary). To clarify, we will only disseminate the annotations of the CT volumes, whereas the corresponding CT volumes can be downloaded from their original websites. We have consulted with the lawyers at Johns Hopkins University, confirming the permissions of distributing the annotations based on the license of each dataset (summarized below). We will further include this information on our GitHub page and dataset download page, ensuring clarity for users upon the dataset usage.
 
+    |  dataset name  | # of CT volumes  | # of annotated organs | use of active learning | license |
+    |  ----  | ----  |  ----  | ----  | ----  |
+    | AMOS | 500 | 15 | No | CC BY 4.0 | 
+    | AbdomenCT-1K | 1,112 | 4 | No | CC BY 4.0 |
+    | TotalSegmentator | 1,204 | 104 | No | CC BY 4.0 |
+    | AbdomenAtlas-8K | 8,448 | 8 | Yes | pending |
