@@ -4,9 +4,9 @@
 
     Two contributions: A large-scale dataset of 8,448 annotated CT volumes and an active learning procedure that can quickly create many other large-scale datasets. 
     
-    Firstly, AbdomenAtlas-8K was a composite dataset that unified medical datasets from at least 26 different hospitals worldwide. In total, more than 60.6 x 10<sup>9</sup> voxels were annotated in AbdomenAtlas-8K in comparison with 4.3 x 10<sup>9</sup> voxels annotated in the existing public datasets. We scaled up the organ annotation by a factor of 15. Once released, AbdomenAtlas-8K can be used to benchmark existing segmentation models and foster medical foundation models for a range of downstream applications. 
+    Firstly, AbdomenAtlas-8K was a composite dataset that unified medical datasets from at least 26 different hospitals worldwide. In total, more than 60.6 x 10<sup>9</sup> voxels were annotated in AbdomenAtlas-8K in comparison with 4.3 x 10<sup>9</sup> voxels annotated in the existing public datasets (as they are partially labeled in a sense of multi-organ segmentation [[Liu et al. ICCV 2023](https://arxiv.org/pdf/2301.00785.pdf)]). We scaled up the organ annotation by a factor of 15. Once released, AbdomenAtlas-8K can be used to benchmark existing segmentation models and foster medical foundation models for a range of downstream applications. 
     
-    Secondly, the proposed active learning procedure can generate an attention map to highlight the regions to be revised by radiologists, reducing the annotation time from 30.8 years to three weeks. This strategy can scale up annotations quickly for creating medical datasets or even natural imaging datasets.
+    Secondly, our proposed active learning procedure can generate an attention map to highlight the regions to be reviewed and revised by radiologists, reducing the annotation time from 30.8 years to three weeks. This strategy can scale up annotations quickly for creating more medical datasets and even natural imaging datasets.
 
 * **Q: Source and permissions to release data.**
 
@@ -42,7 +42,7 @@
     4. **Enabling precision medicine for various downstream applications.**
     We showcased one of the most pressing applications—early detection and localization of pancreatic cancer, an extremely deadly disease, with a 5-year relative survival rate of only 12% in the United States. The AI trained on a large, private dataset at Johns Hopkins Hospital (JHH), performed arguably higher than typical radiologists [[Xia et al., medRxiv 2022](https://www.medrxiv.org/content/10.1101/2022.09.24.22280071v1)]. But this AI model and annotated dataset were inaccessible due to the many policies. Now, our paper demonstrated that using AbdomenAtlas-8K (100% made up of publicly accessible CT volumes), AI can achieve similar performance when directly tested on the JHH dataset (see Table 2). This study is a concrete demonstration of how AbdomenAtlas-8K can be used to train AI models that can be generalized to many CT volumes from novel hospitals and be adapted to address a range of clinical problems.
 
-    [Follow-up Plans] Upon the dataset's release, we aim to host international competitions in 2024, addressing the challenges in multi-organ and multi-tumor segmentation at scale via platforms such as MICCAI/RSNA/Grand Challenge. Additionally, we are in the process of launching special issues about scaling datasets, annotations, and algorithms in leading medical imaging journals such as MEDIA and TMI.
+    [Follow-up Plans] Upon the dataset's release, we aim to host international competitions in 2024, addressing the challenges in multi-organ and multi-tumor segmentation at scale via platforms such as MICCAI/RSNA/Grand Challenge.
 
 * **Q: It was not immediately clear to that the proposed labels offered more accurate information over existing labels.**
 
