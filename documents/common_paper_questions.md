@@ -1,6 +1,7 @@
 ## FAQ
 
 ## Questions about the datasets in the paper
+
 * **What are the contributions and applications of AbdomenAtlas-8K?**
 
     Two contributions: A large-scale dataset of 8,448 annotated CT volumes and an active learning procedure that can quickly create many other large-scale datasets. 
