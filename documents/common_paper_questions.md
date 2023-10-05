@@ -10,7 +10,7 @@
 
 * **Q: Source and permissions to release data.**
 
-    We have now elaborated on the source and permissions in Table 3 (supplementary). To clarify, we will only disseminate the annotations of the CT volumes separately, and users will retrieve the original CT volumes, if needed, from the original sources (websites). Everything we intend to create and license-out will be in separate files and no modifications are necessary to the original CT volumes. We have consulted with the lawyers at Johns Hopkins University, confirming the permissions of distributing the annotations based on the license of each dataset.
+    We have now elaborated on the source and permissions in Table 3 ([supplementary](https://www.cs.jhu.edu/~alanlab/Pubs23/qu2023abdomenatlas.pdf)). To clarify, we will only disseminate the annotations of the CT volumes separately, and users will have to retrieve the original CT volumes, if needed, from the original sources (websites). Everything we intend to create and license-out will be in separate files and no modifications are necessary to the original CT volumes. We have consulted this with the lawyers at Johns Hopkins University, confirming the permissions of distributing the annotations based on the license of each dataset.
 
 * **Q: Comparing AbdomenAtlas-8K with AMOS, AbdomenCT-1K, TotalSegmentator**
 
