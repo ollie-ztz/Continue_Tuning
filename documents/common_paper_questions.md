@@ -1,4 +1,4 @@
-## FAQ
+# FAQ
 
 ## Questions about the datasets in the paper
 
