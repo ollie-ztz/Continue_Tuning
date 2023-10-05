@@ -1,13 +1,12 @@
 ## FAQ
-* #### FAQ
-    * ##### Questions about the datasets in the paper
-    * ##### Questions about the metrics in the paper
-    * ##### Questions about the figures in the paper
-    * ##### Questions about the annotators in the paper
-    * ##### Questions about the approaches in the paper
+
 ## Questions about the datasets in the paper
 * ### Contributions and applications of AbdomenAtlas-8K.
-    Two contributions: A large-scale dataset of 8,448 annotated CT volumes and an active learning procedure that can quickly create many other large-scale datasets. Firstly, AbdomenAtlas-8K was a composite dataset that unified medical datasets from at least 26 different hospitals worldwide. In total, more than 60.6 x 10<sup>9</sup> voxels were annotated in AbdomenAtlas-8K in comparison with 4.3 x 10<sup>9</sup> voxels annotated in the existing public datasets. We scaled up the organ annotation by a factor of 15. Once released, AbdomenAtlas-8K can be used to benchmark existing segmentation models and foster medical foundation models for a range of downstream applications. Secondly, the proposed active learning procedure can generate an attention map to highlight the regions to be revised by radiologists, reducing the annotation time from 30.8 years to three weeks. This strategy can scale up annotations quickly for creating medical datasets or even natural imaging datasets.
+    Two contributions: A large-scale dataset of 8,448 annotated CT volumes and an active learning procedure that can quickly create many other large-scale datasets. 
+    
+    Firstly, AbdomenAtlas-8K was a composite dataset that unified medical datasets from at least 26 different hospitals worldwide. In total, more than 60.6 x 10<sup>9</sup> voxels were annotated in AbdomenAtlas-8K in comparison with 4.3 x 10<sup>9</sup> voxels annotated in the existing public datasets. We scaled up the organ annotation by a factor of 15. Once released, AbdomenAtlas-8K can be used to benchmark existing segmentation models and foster medical foundation models for a range of downstream applications. 
+    
+    Secondly, the proposed active learning procedure can generate an attention map to highlight the regions to be revised by radiologists, reducing the annotation time from 30.8 years to three weeks. This strategy can scale up annotations quickly for creating medical datasets or even natural imaging datasets.
 * ### Source and permissions to release data.
     We have now elaborated on the source and permissions in Table 3 (supplementary). To clarify, we will only disseminate the annotations of the CT volumes separately, and users will retrieve the original CT volumes, if needed, from the original sources (websites). Everything we intend to create and license-out will be in separate files and no modifications are necessary to the original CT volumes. We have consulted with the lawyers at Johns Hopkins University, confirming the permissions of distributing the annotations based on the license of each dataset. We will further include detailed download instructions on our GitHub page.
 * ### Comprehensive description and comparison between AMOS, AbdomenCT-1K, TotalSegmentator and AbdomenAtlas-8K
