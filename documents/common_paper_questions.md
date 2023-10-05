@@ -2,7 +2,7 @@
 
 ## Questions about the datasets in the paper
 
-* **What are the contributions and applications of AbdomenAtlas-8K?**
+* **Q: What are the contributions and applications of AbdomenAtlas-8K?**
 
     Two contributions: A large-scale dataset of 8,448 annotated CT volumes and an active learning procedure that can quickly create many other large-scale datasets. 
     
@@ -10,7 +10,7 @@
     
     Secondly, the proposed active learning procedure can generate an attention map to highlight the regions to be revised by radiologists, reducing the annotation time from 30.8 years to three weeks. This strategy can scale up annotations quickly for creating medical datasets or even natural imaging datasets.
 
-* **Source and permissions to release data.**
+* **Q: Source and permissions to release data.**
 
     We have now elaborated on the source and permissions in Table 3 (supplementary). To clarify, we will only disseminate the annotations of the CT volumes separately, and users will retrieve the original CT volumes, if needed, from the original sources (websites). Everything we intend to create and license-out will be in separate files and no modifications are necessary to the original CT volumes. We have consulted with the lawyers at Johns Hopkins University, confirming the permissions of distributing the annotations based on the license of each dataset.
 
