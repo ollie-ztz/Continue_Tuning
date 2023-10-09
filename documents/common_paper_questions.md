@@ -1,36 +1,8 @@
 # FAQ
 
-* **Q: What are the contributions and applications of AbdomenAtlas-8K?**
+* **Q: The source and permissions to release data. The utility and scope of the dataset, how it might be employed by future researchers and benchmarks against existing methods?**
 
-    Two contributions: A large-scale dataset of 8,448 annotated CT volumes and an active learning procedure that can quickly create many other large-scale datasets. 
-    
-    Firstly, AbdomenAtlas-8K was a composite dataset that unified medical datasets from at least 26 different hospitals worldwide. In total, more than 60.6 x 10<sup>9</sup> voxels were annotated in AbdomenAtlas-8K in comparison with 4.3 x 10<sup>9</sup> voxels annotated in the existing public datasets (as they are partially labeled in a sense of multi-organ segmentation [[Liu et al. ICCV 2023](https://arxiv.org/pdf/2301.00785.pdf)]). We scaled up the organ annotation by a factor of 15. Once released, AbdomenAtlas-8K can be used to benchmark existing segmentation models and foster medical foundation models for a range of downstream applications. 
-    
-    Secondly, our proposed active learning procedure can generate an attention map to highlight the regions to be reviewed and revised by radiologists, reducing the annotation time from 30.8 years to three weeks. This strategy can scale up annotations quickly for creating more medical datasets and even natural imaging datasets.
-
-* **Q: Source and permissions to release data.**
-
-    We have now elaborated on the source and permissions in Table 3 ([supplementary](https://www.cs.jhu.edu/~alanlab/Pubs23/qu2023abdomenatlas.pdf)). To clarify, we will only disseminate the annotations of the CT volumes separately, and users will have to retrieve the original CT volumes, if needed, from the original sources (websites). Everything we intend to create and license-out will be in separate files and no modifications are necessary to the original CT volumes. We have consulted this with the lawyers at Johns Hopkins University, confirming the permissions of distributing the annotations based on the license of each dataset.
-
-* **Q: Comparing AbdomenAtlas-8K with AMOS, AbdomenCT-1K, TotalSegmentator**
-
-    1. **A significantly larger number of annotated CT volumes.** TotalSegmentator, AMOS, and AB1K provided 1,204, 500, and 1,112 annotated CT volumes. AbdomenAtlas-8K provided 8,448 annotated CT volumes (around eight times larger).
-    
-    2. **A notably greater diversity of the provided CT volumes.** The CT volumes in AbdomenAtlas-8K were collected and assembled from at least 26 different hospitals worldwide, whereas the makeup of TotalSegmentator and AMOS was sourced from a single country. Specifically, TotalSegmentator was from Switzerland (biased to the Central European population) and AMOS was from China (biased to the East Asian population). While AbdomenCT-1K was from 12 different hospitals, our AbdomenAtlas-8K presents significantly more CT volumes (8,448 vs. 1,112) and more types of annotated classes (8 vs. 4). 
-    
-    3. **The manual annotation time was significantly reduced.** The creation of AbdomenAtlas-8K used an effective active learning procedure, reducing the annotation time from 30.8 years to three weeks (see the revised Section 3.3 for a detailed calculation). This is an important scientific attempt to put active learning into practical use.
-    
-    4. **Produce an attention map to highlight the regions to be revised.** The attention maps mentioned in our active learning procedure can accurately detect regions with a high risk of prediction errors (evidenced in Table 1). This capability enables annotators to quickly find areas that require human revision. As a result, it significantly reduces annotators' workload and annotation time by a factor of 533.
-
-    The  following Table to signify the extension of this research over the previous ones.
-    |  dataset name  | # of CT volumes  | # of annotated organs | # of hospitals | use of active learning |
-    |  ----  | ----  |  ----  | ----  | ----  |
-    | AMOS | 500 | 15 | 2 | No |
-    | AbdomenCT-1K | 1,112 | 4 | 12 | No |
-    | TotalSegmentator | 1,204 | 104 | 1 | No |
-    | AbdomenAtlas-8K | 8,448 | 8 | 26 | Yes |
-
-* **Q: The utility and scope of the dataset, how it might be employed by future researchers and benchmarks against existing methods?**
+    We have elaborated on the source and permissions in Table 3 ([supplementary](https://www.cs.jhu.edu/~alanlab/Pubs23/qu2023abdomenatlas.pdf)). To clarify, we will only disseminate the annotations of the CT volumes separately, and users will have to retrieve the original CT volumes, if needed, from the original sources (websites). Everything we intend to create and license-out will be in separate files and no modifications are necessary to the original CT volumes. We have consulted this with the lawyers at Johns Hopkins University, confirming the permissions of distributing the annotations based on the license of each dataset.
 
     1. **Benchmarking existing segmentation models.** In the submission, we benchmarked the most recent advances in medical segmentation, i.e., SwinUNETR [[Tang et al., CVPR 2022](https://openaccess.thecvf.com/content/CVPR2022/papers/Tang_Self-Supervised_Pre-Training_of_Swin_Transformers_for_3D_Medical_Image_Analysis_CVPR_2022_paper.pdf)]. Thanks for your suggestion, we have now enriched the comparison by evaluating three more models on the AbdomenAtlas-8K dataset, namely U-Net, UNETR, and SegResNet. The revised benchmark has been added to the main paper (see Table 2). 
 
@@ -43,6 +15,26 @@
     We showcased one of the most pressing applications—early detection and localization of pancreatic cancer, an extremely deadly disease, with a 5-year relative survival rate of only 12% in the United States. The AI trained on a large, private dataset at Johns Hopkins Hospital (JHH), performed arguably higher than typical radiologists [[Xia et al., medRxiv 2022](https://www.medrxiv.org/content/10.1101/2022.09.24.22280071v1)]. But this AI model and annotated dataset were inaccessible due to the many policies. Now, our paper demonstrated that using AbdomenAtlas-8K (100% made up of publicly accessible CT volumes), AI can achieve similar performance when directly tested on the JHH dataset (see Table 2). This study is a concrete demonstration of how AbdomenAtlas-8K can be used to train AI models that can be generalized to many CT volumes from novel hospitals and be adapted to address a range of clinical problems.
 
     [Follow-up Plans] Upon the dataset's release, we aim to host international competitions in 2024, addressing the challenges in multi-organ and multi-tumor segmentation at scale via platforms such as MICCAI/RSNA/Grand Challenge.
+    Two contributions: A large-scale dataset of 8,448 annotated CT volumes and an active learning procedure that can quickly create many other large-scale datasets.
+
+* **Q: Comparing AbdomenAtlas-8K with AMOS, AbdomenCT-1K, TotalSegmentator**
+
+    1. **A significantly larger number of annotated CT volumes.** TotalSegmentator, AMOS, and AB1K provided 1,204, 500, and 1,112 annotated CT volumes. AbdomenAtlas-8K provided 8,448 annotated CT volumes (around eight times larger).
+    
+    2. **A notably greater diversity of the provided CT volumes.** The CT volumes in AbdomenAtlas-8K were collected and assembled from at least 26 different hospitals worldwide, whereas the makeup of TotalSegmentator and AMOS was sourced from a single country. Specifically, TotalSegmentator was from Switzerland (biased to the Central European population) and AMOS was from China (biased to the East Asian population). While AbdomenCT-1K was from 12 different hospitals, our AbdomenAtlas-8K presents significantly more CT volumes (8,448 vs. 1,112) and more types of annotated classes (8 vs. 4). 
+    
+    3. **The manual annotation time was significantly reduced.** The creation of AbdomenAtlas-8K used an effective active learning procedure, reducing the annotation time from 30.8 years to three weeks (see the revised Section 3.3 for a detailed calculation). This is an important scientific attempt to put active learning into practical use.
+    
+    4. **Produce an attention map to highlight the regions to be revised.** The attention maps mentioned in our active learning procedure can accurately detect regions with a high risk of prediction errors (evidenced in Table 1). This capability enables annotators to quickly find areas that require human revision. As a result, it significantly reduces annotators' workload and annotation time by a factor of 533.
+
+    The  following Table to signify the extension of this research over the previous ones.
+    |  dataset name  | # of CT volumes  | # of annotated organs | # of hospitals | use of active learning | license |
+    |  ----  | ----  |  ----  | ----  | ----  | ----  |
+    | AMOS | 500 | 15 | 2 | No | CC BY 4.0 | 
+    | AbdomenCT-1K | 1,112 | 4 | 12 | No | CC BY 4.0 |
+    | TotalSegmentator | 1,204 | 104 | 1 | No | CC BY 4.0 |
+    | AbdomenAtlas-8K | 8,448 | 8 | 26 | Yes | pending |
+
 
 * **Q: It was not immediately clear to that the proposed labels offered more accurate information over existing labels.**
 
@@ -53,21 +45,6 @@
     2. **A fast procedure to annotate CT volumes at scale.** Our active learning procedure enables us to accomplish the task within three weeks, a remarkable contrast to the conventional manual annotation approach, which typically requires about 30.8 years. This accelerates the annotation process by an impressive factor of 533. The majority of the annotation workload is managed solely by only one radiologist. Furthermore, this strategy also allows us to efficiently annotate a wider range of organs and tumors in the future.
     
     3. [Minor] **Novel dataset.** We have applied our active learning procedure to creating a large private dataset (JHH) of 5,281 novel CT volumes with per-voxel annotations. However, at the moment, we cannot guarantee that this dataset can be released soon due to numerous regulatory constraints. We are actively working with Johns Hopkins Hospital to expedite its potential release. This has been clarified in our introduction: “we commit to releasing 3,410 of the 8,448 CT volumes.”
-
-* **Q: Could we please clarify the source and permissions for releasing the data? It would also be helpful to understand the information about data reuse from previous datasets.** 
-
-    We have now elaborated on the source and permissions in Table 3 (supplementary). To clarify, we will only disseminate the annotations of the CT volumes, whereas the corresponding CT volumes can be downloaded from their original websites. We have consulted with the lawyers at Johns Hopkins University, confirming the permissions of distributing the annotations based on the license of each dataset (summarized below). We will further include this information on our GitHub page and dataset download page, ensuring clarity for users upon the dataset usage.
-
-    |  dataset name  | # of CT volumes  | # of annotated organs | use of active learning | license |
-    |  ----  | ----  |  ----  | ----  | ----  |
-    | AMOS | 500 | 15 | No | CC BY 4.0 | 
-    | AbdomenCT-1K | 1,112 | 4 | No | CC BY 4.0 |
-    | TotalSegmentator | 1,204 | 104 | No | CC BY 4.0 |
-    | AbdomenAtlas-8K | 8,448 | 8 | Yes | pending |
-
-* **Q: It might be beneficial if the authors consider presenting a comparison, possibly in the form of a table, showcasing the source countries of data from previous datasets alongside the proposed AbdomenAtlas-8K.**
-
-    We appreciate your valuable suggestion. In the updated Table 3, we have incorporated the source countries corresponding to each previous dataset. Furthermore, we have included a global map illustrating the worldwide source distribution of AbdomenAtlas-8K.
 
 * **Q:It's noteworthy that while the authors initially highlight concerns about the TotalSegmentator's use of a single-model automatic segmentation, their approach also leans towards automation, albeit with an ensemble of three models, and manual annotation is done for just 400 out of the 8,000 volumes.**
 
