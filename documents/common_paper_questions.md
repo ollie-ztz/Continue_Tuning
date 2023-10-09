@@ -61,9 +61,9 @@
 
     Pseudo labels refer to organ labels predicted by AI models without any additional revision or validation by human annotators.
 
-* **Q: Considering the active learning procedure is a primary contribution, I anticipated seeing its impact. Yet, in the **revised** Table 5 (supplementary), the improvement on JHH, specifically in terms of mDice and mNSD, is around 1-2 points. This falls within the standard deviation for each of the 9 organs on average. It might be helpful to provide further insights into the dataset's utility and to clarify if the new labels offer any advantages over the existing partial labels.**
+* **Q: In the **revised** Table 5 (supplementary), the improvement on JHH, specifically in terms of mDice and mNSD, is around 1-2 points. This falls within the standard deviation for each of the 9 organs on average.**
 
-    Table 5 (supplementary) only showed the improvement from Step 0 to Step 1 of the active learning procedure, instead of presenting the full improvement before and after using our active learning procedure. We appreciate your valuable feedback and have made several revisions to this table.
+    Table 5 (supplementary) only showed the improvement from Step 0 to Step 1 of the active learning procedure, instead of presenting the full improvement before and after using our active learning procedure.
 
     1. We added the improvement of Step 2 in the active learning procedure. Compared to the results in step 0, both mDSC and mNSD show substantial improvement, confirming the effectiveness of our active learning procedure. 
     2. We marked the revised classes at each Step. The segmentation performance of some organs were marginally improved simply because (1) these organs were hardly revised at certain Steps or (2) the segmentation performance was already very high (e.g., DSC > 90%). For those revised organs (e.g., aorta), AI models showed a significant improvement from 72.3% to 82.9%. 
@@ -110,18 +110,10 @@
     1. **Diverse annotation protocols.** As mentioned in A2, there are often varying annotation protocols for the aorta among different hospitals. Consequently, achieving precise segmentation with our AI models becomes a challenging task. This often requires frequent revisions of aorta annotations by our annotators. The improvement of aorta annotations through the active learning procedure is illustrated in Table 5. Notably, there is a substantial increase in mDSC, from 72.3% to 83.7%, after undergoing two steps of active learning procedure.
     2. **Blurry organ boundary.** Organs such as the pancreas often exhibit blurry boundaries, presenting a challenge for both AI and human annotations. Consequently, there is no observed improvement in annotation performance for such organs even after two steps of our active learning procedure.
 
-* **Q: In Figure 3 of the manuscript, the sum of attention maps for each organ is depicted. Clarifying the experiment's intent and the reasoning behind the 5% threshold would be beneficial.**
+* **Q: In Figure 3, the sum of attention maps for each organ is depicted. Clarifying the experiment's intent and the reasoning behind the 5% threshold would be beneficial.**
 
     1. **The intention behind Figure 3** is to visualize the distribution of the attention size of each CT volume. A larger attention size implies a greater requirement for revision in various regions.  Figure 3 suggests that the attention size for most CT volumes is small, but there are several significant-sized outliers. These outliers are of high priority for revision by human experts. According to the figure, the ratio of outliers is about 5% (highlighted in red). The 5% is estimated by the plot and also related to the budget of human revision for each Step in the active learning procedure. It is essential to emphasize that roughly 5% of CT volumes within each dataset are highly likely to contain predicted errors, requiring further revision by our annotator. 
     2. **The choice of the 5% threshold.** It is true that this number is empirical. The 5% is estimated based on (1) empirical observations (the number of outliers in Figure 3) and (2) the annotation budget at each Step in the active learning procedure. If there are many outliers or a limited budget, the threshold needs to be increased accordingly. If one is dealing with new datasets, this threshold is easily obtained by analyzing the attention size distribution as plotted in Figure 3.
-
-* **Q: Regarding Figure 3 (Attention), there's some ambiguity between the "sum of attention" on the y-axis and the "attention volume" in the caption. A visual breakdown in the figure might help. Also, I wonder if using varied training initializations with one architecture can produce different attention? This could offer insights into model uncertainty.**
-
-    The “sum of attention” in the y-axis title and “attention size” in the caption are the same. Thank you for pointing this out. We have revised Figure 3 and its caption to make the terms consistent.
-
-    1. **Graphical visualization of components.** Sorry that we are not completely clear about the “component” that you were referring to. If you're referring to each organ in the attention map, please see Figure 2 and Appendix Figure 11 for the visualization. If this isn't what you had in mind, please provide further clarification on the “components”, and we'll be happy to make improvements to Figure 3. Many thanks!
-
-    2. **Whether attention can be generated using one architecture but with different initializations at training**. Yes, this is also a great approach to generate attention maps by using a single AI architecture with different weight initialization.
 
 * **Q: Regarding Figure 5, the attention map appears to highlight regions beyond FP/FN labels or ambiguous cases. If these regions also underwent human review, it might lead to extra, potentially needless, effort.**
 
@@ -129,7 +121,7 @@
     1. We have quantified these regions in Table 1, suggesting that for some organs, our method presented high sensitivity and precision (both > 0.9), while some organs had relatively lower sensitivity (e.g., liver) and precision (e.g., spleen, gallbladder, and IVC). Consequently, the active learning methods for these organs require further investigation.
     2.  Two junior radiologists (3-year experience) took the responsibility to look through the entire AbdomenAtlas-8K once the active learning procedure is completed. The radiologists will make a revision if the labels were incorrect (i.e., our method missed the regions), but such revisions were seldom required, with only 55 out of 8,448 instances needing adjustments. 
 
-* **Q: It would be helpful to understand the method used for the assignment of three human annotators.**
+* **Q: It would be helpful to understand the method used for the assignment of three human annotators and the training level or expertise of the annotators.**
 
     Our study recruited three annotators, comprising a senior radiologist with over 15-year experience and two junior radiologists with 3-year experience. The senior radiologist undertook the task of annotation revision in the active learning procedure. The junior radiologists were responsible for reviewing the completed AbdomenAtlas-8K annotations and making revisions if needed. Additionally, they conducted the inter-annotator variability analysis in Figure 8 and further recorded the time required for annotating each organ in Table 4.
 
@@ -137,9 +129,7 @@
 
     The purpose of investigating the inter-annotator agreement in Figure 8(b) is to assess the quality of AI predictions for organ segmentation. Therefore, in Figure 8(b), we asked the two radiologists to annotate these organs from scratch without the use of initial AI annotation—**the AI annotation will not bias the radiologists**. As a result, for each organ, we obtained two annotations made independently by the two human experts and one annotation predicted by the AI model. Figure 8(b) presented the mutual DSC score of each pair, showing that AI can segment these organs with a similar variance to human experts.
 
-* **Q: It would be beneficial to have details regarding the training level or expertise of the annotators.**
-
-    One annotator is a trained radiologist with 15 years of experience. The other two additional annotators are with 3 years of experience. Thanks for your question; we have clarified this in the revised manuscript. 
+    One annotator is a trained radiologist with 15 years of experience. The other two additional annotators are with 3 years of experience.
 
 * **Q: Does the active learning model improve performance of a single annotator, or all annotators. In other works, if the segmentations from all three annotators were combined (without the proposed strategy), would they be better or worse than segmentation acquired using the proposed approach?**
 
