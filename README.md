@@ -105,36 +105,23 @@ This is how our AbdonmenAtlas-8K appears
             ├── pancreas.nii.gz
 ```
 
-## 5. [Optional] Active Learning
 
-If you want to perform the active learning process, you will need the following [active learning instructions](document/active_learning_instructions.md) to generate the attention map for human annotators.
-
-<p align="center"><img width="100%" src="document/fig_attention_map.jpg" /></p>
-Figure. Illustration of an attention map.
-
-## TODO
+<!-- ## TODO
 
 - [x] Release pre-trained AI model checkpoints (U-Net and Swin UNETR)
 - [x] Release the AbdomenAtlas-8K dataset (we commit to releasing 3,410 of the 8,448 CT volumes)
-- [ ] Support more data formats (e.g., dicom)
+- [ ] Support more data formats (e.g., dicom) -->
 
 ## Citation 
 
 ```
-@article{qu2024abdomenatlas,
+<!-- @article{qu2024abdomenatlas,
   title={Abdomenatlas-8k: Annotating 8,000 CT volumes for multi-organ segmentation in three weeks},
   author={Qu, Chongyu and Zhang, Tiezheng and Qiao, Hualin and Tang, Yucheng and Yuille, Alan L and Zhou, Zongwei and others},
   journal={Advances in Neural Information Processing Systems},
   volume={36},
   year={2023}
-}
-
-@inproceedings{li2024well,
-  title={How Well Do Supervised Models Transfer to 3D Image Segmentation?},
-  author={Li, Wenxuan and Yuille, Alan and Zhou, Zongwei},
-  booktitle={The Twelfth International Conference on Learning Representations},
-  year={2024}
-}
+} -->
 ```
 
 ## Acknowledgements
