@@ -17,7 +17,7 @@ ISBI 2024 <br/>
 <sup>2 </sup>Rutgers University,  <br/>
 <sup>3 </sup>City University of Hong Kong,   <br/>
 <sup>4 </sup>NVIDIA <br/> -->
-<b>RSNA 2023 (Oral Presentation) <br/>
+<b>RSNA 2023 (Oral Presentation)</b><br/>
 [paper](documents/RSNA2023.pdf) | [code](https://github.com/ollie-ztz/Continue_Tuning) | [slides](documents/RSNA_Poster.pdf)
 
 
