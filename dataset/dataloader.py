@@ -78,11 +78,8 @@ class UniformDataset(Dataset):
         return apply_transform(self.transform, data_i) if self.transform is not None else data_i
     
     def __getitem__(self, index):
-        ## the index generated outside is only used to select the dataset
-        ## the corresponding data in each dataset is selelcted by the np.random.randint function
         set_index = index % self.datasetlen
         set_key = self.datasetkey[set_index]
-        # data_index = int(index / self.__len__() * self.datasetnum[set_index])
         data_index = np.random.randint(self.datasetnum[set_index], size=1)[0]
         return self._transform(set_key, data_index)
 
@@ -110,8 +107,6 @@ class UniformCacheDataset(CacheDataset):
         self.datasetlen = len(self.datasetkey)
     
     def index_uniform(self, index):
-        ## the index generated outside is only used to select the dataset
-        ## the corresponding data in each dataset is selelcted by the np.random.randint function
         set_index = index % self.datasetlen
         data_index = np.random.randint(self.data_num[set_index], size=1)[0]
         post_index = int(sum(self.data_num[:set_index]) + data_index)
@@ -222,45 +217,6 @@ class Compose_Select(Compose):
             input_ = apply_transform(_transform, input_, self.map_items, self.unpack_items, self.log_stats)
         return input_
 
-# Combine the liver and liver tumor into liver label while liver tumor label remains the same
-
-# class Merge_Organ(Transform):
-#     backend = [TransformBackends.TORCH, TransformBackends.NUMPY]
-
-#     def __call__(self, lbl: NdarrayOrTensor, totemplate: List, tumor=False, tumor_list=None) -> NdarrayOrTensor:
-#         new_lbl = np.zeros(lbl.shape)
-#         for src, tgt in enumerate(totemplate):
-#             new_lbl[lbl == (src+1)] = tgt
-#         if tumor:
-#             for src, item in tumor_list:
-#                 new_lbl[new_lbl == item] = totemplate[0]
-#         return new_lbl
-
-# class Merged(MapTransform):
-#     backend = ToTemplatelabel.backend
-#     def __init__(self, keys: KeysCollection, allow_missing_keys: bool = False) -> None:
-#         super().__init__(keys, allow_missing_keys)
-#         self.totemplate = ToTemplatelabel()
-
-#     def __call__(self, data: Mapping[Hashable, NdarrayOrTensor]) -> Dict[Hashable, NdarrayOrTensor]:
-#         d = dict(data)
-#         dataset_index = int(d['name'][0:2])
-#         TUMOR = False
-#         tumor_list = None
-#         if dataset_index == 1 or dataset_index == 2:
-#             template_key = d['name'][0:2]
-#             pass
-#         elif dataset_index == 10:
-#             template_key = d['name'][0:2] + '_' + d['name'][17:19]
-#         else:
-#             template_key = d['name'][0:2]
-#         if template_key in ['04', '05', '10_03', '10_07', '14']:
-#             TUMOR = True
-#             tumor_list = POST_TUMOR_DICT[template_key]
-#         d['label'] = self.totemplate(d['label'], TEMPLATE[template_key], tumor=TUMOR, tumor_list=tumor_list)
-#         return d
-
-
 def get_loader(args):
     train_transforms = Compose(
         [
@@ -311,13 +267,11 @@ def get_loader(args):
             LoadImageh5d(keys=["image", "label"]),
             AddChanneld(keys=["image", "label"]),
             Orientationd(keys=["image", "label"], axcodes="RAS"),
-            # ToTemplatelabeld(keys=['label']),
-            # RL_Splitd(keys=['label']),
             Spacingd(
                 keys=["image", "label"],
                 pixdim=(args.space_x, args.space_y, args.space_z),
                 mode=("bilinear", "nearest"),
-            ), # process h5 to here
+            ),
             ScaleIntensityRanged(
                 keys=["image"],
                 a_min=args.a_min,
@@ -336,7 +290,6 @@ def get_loader(args):
         train_lbl = []
         train_post_lbl = []
         train_name = []
-
         for item in args.dataset_list:
             for line in open(os.path.join(args.data_txt_path,item +'.txt')):
                 name = line.strip().split()[1].split('.')[0]
@@ -366,19 +319,15 @@ def get_loader(args):
     if args.phase == 'validation':
         val_img = []
         val_lbl = []
-        val_post_lbl = []
         val_name = []
         for item in args.dataset_list:
             for line in open(args.data_txt_path + item +'_val.txt'):
                 name = line.strip().split()[1].split('.')[0]
-                # dataset_index = int(name[0:2])
-                # if int(name[0:2]) == 1: #and (name[0:2] + '_' + name[17:19]) == '10_03'
                 val_img.append(args.data_root_path + line.strip().split()[0])
                 val_lbl.append(args.data_root_path + line.strip().split()[1])
-                val_post_lbl.append(args.data_root_path + name.replace('label', 'post_label') + '.h5')
                 val_name.append(name)
-        data_dicts_val = [{'image': image, 'label': label, 'post_label': post_label, 'name': name}
-                    for image, label, post_label, name in zip(val_img, val_lbl, val_post_lbl, val_name)]
+        data_dicts_val = [{'image': image, 'label': label, 'name': name}
+                    for image, label, name in zip(val_img, val_lbl, val_name)]
         print('val len {}'.format(len(data_dicts_val)))
         
         if args.cache_dataset:
@@ -392,7 +341,6 @@ def get_loader(args):
     if args.phase == 'test':
         test_img = []
         test_lbl = []
-        test_post_lbl = []
         test_name = []
         for item in args.dataset_list:
             for line in open(args.data_txt_path + item +'_test.txt'):
@@ -400,10 +348,9 @@ def get_loader(args):
                 if int(name[0:2]) == 1: #and (name[0:2] + '_' + name[17:19]) == '10_03'
                     test_img.append(args.data_root_path + line.strip().split()[0])
                     test_lbl.append(args.data_root_path + line.strip().split()[1])
-                    test_post_lbl.append(args.data_root_path + name.replace('label', 'post_label') + '.h5')
                     test_name.append(name)
-        data_dicts_test = [{'image': image, 'label': label, 'post_label': post_label, 'name': name}
-                    for image, label, post_label, name in zip(test_img, test_lbl, test_post_lbl, test_name)]
+        data_dicts_test = [{'image': image, 'label': label, 'name': name}
+                    for image, label, name in zip(test_img, test_lbl, test_name)]
         print('test len {}'.format(len(data_dicts_test)))
 
         if args.cache_dataset:
@@ -416,5 +363,4 @@ def get_loader(args):
 if __name__ == "__main__":
     train_loader, test_loader = partial_label_dataloader()
     for index, item in enumerate(test_loader):
-        # print(item['image'].shape, item['label'].shape, item['task_id'])
         input()
