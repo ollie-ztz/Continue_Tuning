@@ -71,51 +71,6 @@ def train(args, train_loader, model, optimizer, loss_seg_DICE, loss_seg_CE):
     
     return loss_dice_ave/len(epoch_iterator), loss_bce_ave/len(epoch_iterator)
 
-# def validation(model, ValLoader, args):
-#     model.eval()
-#     dice_list = {}
-#     for key in TEMPLATE.keys():
-#         dice_list[key] = np.zeros((2, NUM_CLASS)) # 1st row for dice, 2nd row for count
-#     for index, batch in enumerate(tqdm(ValLoader)):
-#         # print('%d processd' % (index))
-#         image, label, name = batch["image"].cuda(), batch["label"], batch["name"]
-
-#         with torch.no_grad():
-#             pred = sliding_window_inference(image, (args.roi_x, args.roi_y, args.roi_z), 1, model)
-#             pred_sigmoid = F.sigmoid(pred)
-        
-#         B = pred_sigmoid.shape[0]
-#         for b in range(B):
-#             template_key = get_key(name[b])
-#             organ_list = TEMPLATE[template_key]
-#             for organ in organ_list:
-#                 dice_organ = dice_score(pred_sigmoid[b,organ-1,:,:,:], label[b,organ-1,:,:,:].cuda())
-#                 dice_list[template_key][0][organ-1] += dice_organ.item()
-#                 dice_list[template_key][1][organ-1] += 1
-    
-#     ave_organ_dice = np.zeros((2, NUM_CLASS))
-#     if args.local_rank == 0:
-#         with open('out/'+args.log_name+f'/val_{args.epoch}.txt', 'w') as f:
-#             for key in TEMPLATE.keys():
-#                 organ_list = TEMPLATE[key]
-#                 content = 'Task%s| '%(key)
-#                 for organ in organ_list:
-#                     dice = dice_list[key][0][organ-1] / dice_list[key][1][organ-1]
-#                     content += '%s: %.4f, '%(ORGAN_NAME[organ-1], dice)
-#                     ave_organ_dice[0][organ-1] += dice_list[key][0][organ-1]
-#                     ave_organ_dice[1][organ-1] += dice_list[key][1][organ-1]
-#                 print(content)
-#                 f.write(content)
-#                 f.write('\n')
-#             content = 'Average | '
-#             for i in range(NUM_CLASS):
-#                 content += '%s: %.4f, '%(ORGAN_NAME[i], ave_organ_dice[0][organ-1] / ave_organ_dice[1][organ-1])
-#             print(content)
-#             f.write(content)
-#             f.write('\n')
-            
-            
-
 
 def process(args):
     rank = 0
