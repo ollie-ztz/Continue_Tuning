@@ -112,17 +112,17 @@ This is how our AbdonmenAtlas-8K appears
 - [x] Release the AbdomenAtlas-8K dataset (we commit to releasing 3,410 of the 8,448 CT volumes)
 - [ ] Support more data formats (e.g., dicom) -->
 
-## Citation 
+<!-- ## Citation 
 
 ```
-<!-- @article{qu2024abdomenatlas,
+@article{qu2024abdomenatlas,
   title={Abdomenatlas-8k: Annotating 8,000 CT volumes for multi-organ segmentation in three weeks},
   author={Qu, Chongyu and Zhang, Tiezheng and Qiao, Hualin and Tang, Yucheng and Yuille, Alan L and Zhou, Zongwei and others},
   journal={Advances in Neural Information Processing Systems},
   volume={36},
   year={2023}
-} -->
-```
+}
+``` -->
 
 ## Acknowledgements
 This work was supported by the Lustgarten Foundation for Pancreatic Cancer Research and partially by the Patrick J. McGovern Foundation Award. We appreciate the effort of the MONAI Team to provide open-source code for the community.
