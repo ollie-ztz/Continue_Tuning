@@ -26,13 +26,13 @@ NeurIPS 2023 <br/>
 <sup>3 </sup>City University of Hong Kong,   <br/>
 <sup>4 </sup>NVIDIA <br/>
 RSNA 2023 (Oral Presentation) <br/>
-[paper](documents/RSNA2023.pdf) | [code](https://github.com/ollie-ztz/Continue_Tuning_ISBI2024) | [slides](documents/RSNA_Poster.pdf)
+[paper](documents/RSNA2023.pdf) | [code](https://github.com/ollie-ztz/Continue_Tuning) | [slides](documents/RSNA_Poster.pdf)
 
 
 ## 0. Installation
 
 ```bash
-git clone https://github.com/ollie-ztz/Continue_Tuning_ISBI2024
+git clone https://github.com/ollie-ztz/Continue_Tuning
 ```
 
 See [installation instructions](document/INSTALL.md) to create an environment and obtain requirements.
