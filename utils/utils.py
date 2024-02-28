@@ -85,7 +85,6 @@ ORGAN_NAME_OVERLAP = ['spleen', 'kidney_right', 'kidney_left', 'gall_bladder', '
                 'lung_right', 'lung_left', 'colon', 'intestine', 'rectum', 
                 'bladder', 'prostate', 'femur_left', 'femur_right', ]
 
-
 ## mapping to original setting
 MERGE_MAPPING_v1 = {
     '01': [(1,1), (2,2), (3,3), (4,4), (5,5), (6,6), (7,7), (8,8), (9,9), (10,10), (11,11), (12,12), (13,13), (14,14)],
@@ -328,12 +327,6 @@ def organ_post_process(pred_mask, organ_list,case_dir,args):
                                     writer.writerow([case_id])
 
 
-                            
-
-  
-
-
-
                 else:
                     if left_lung_size/right_lung_size > 4:
                         mid_point = int(left_lung_mask.shape[0]/2)
@@ -382,10 +375,6 @@ def organ_post_process(pred_mask, organ_list,case_dir,args):
                                     content = case_id
                                     writer.writerow([case_id])
                 print('find number of anomaly slice: '+str(total_anomly_slice_number))
-
-
-
-                
             elif organ == 17:
                 continue ## the le
             elif organ in [1,2,3,4,5,6,7,8,9,12,13,14,18,19,20,21,22,23,24,25]: ## rest organ index
