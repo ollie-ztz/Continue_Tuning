@@ -1,6 +1,6 @@
 # Leveraging AI Predicted and Expert Revised Annotations in Interactive Segmentation: Continual Tuning or Full Training?
 
-need a figure here.
+<p align="center"><img width="100%" src="documents/Our_Structure.pdf" /></p>
 
 ## Paper
 
