@@ -11,17 +11,16 @@ import shutil
 import nibabel as nib
 import csv
 
-from monai.losses import DiceCELoss
+
 from monai.data import load_decathlon_datalist, decollate_batch
 from monai.transforms import AsDiscrete
 from monai.metrics import DiceMetric
 from monai.inferers import sliding_window_inference
 from model.Universal_model import Universal_model
 from dataset.dataloader_test import get_loader
-from utils import loss
-from utils.utils import dice_score, threshold_organ, visualize_label, merge_label, get_key, pseudo_label_all_organ, pseudo_label_single_organ, save_organ_label
+from utils.utils import pseudo_label_all_organ, pseudo_label_single_organ
 from utils.utils import TEMPLATE, ORGAN_NAME, NUM_CLASS,ORGAN_NAME_LOW
-from utils.utils import organ_post_process, threshold_organ,create_entropy_map,save_soft_pred,invert_transform
+from utils.utils import organ_post_process, threshold_organ, invert_transform
 
 torch.multiprocessing.set_sharing_strategy('file_system')
 
@@ -34,9 +33,8 @@ def validation(model, ValLoader, val_transforms, args):
     model.eval()
     dice_list = {}
     for key in TEMPLATE.keys():
-        dice_list[key] = np.zeros((2, NUM_CLASS)) # 1st row for dice, 2nd row for count
+        dice_list[key] = np.zeros((2, NUM_CLASS))
     for index, batch in enumerate(tqdm(ValLoader)):
-        # print('%d processd' % (index))
         if args.original_label:
             image, label, name_lbl,name_img = batch["image"].cuda(), batch["label"], batch["name_lbl"],batch["name_img"]
             image_file_path = os.path.join(args.data_root_path,name_img[0] +'.nii.gz')
@@ -79,7 +77,6 @@ def validation(model, ValLoader, val_transforms, args):
             pred = sliding_window_inference(image, (args.roi_x, args.roi_y, args.roi_z), 1, model, overlap=0.75, mode='gaussian')
             pred_sigmoid = F.sigmoid(pred)
         
-        #pred_hard = threshold_organ(pred_sigmoid, organ=args.threshold_organ, threshold=args.threshold)
         pred_hard = threshold_organ(pred_sigmoid,args)
         pred_hard = pred_hard.cpu()
         torch.cuda.empty_cache()
@@ -89,7 +86,6 @@ def validation(model, ValLoader, val_transforms, args):
             organ_list_all = TEMPLATE['all'] # post processing all organ
             pred_hard_post,total_anomly_slice_number = organ_post_process(pred_hard.numpy(), organ_list_all,case_save_path,args)
             pred_hard_post = torch.tensor(pred_hard_post)
-
         
         if args.store_result:
             if not os.path.isdir(organ_seg_save_path):
@@ -106,7 +102,6 @@ def validation(model, ValLoader, val_transforms, args):
                 print('organ seg saved in path: %s'%(new_name))
                 nib.save(organ_save,new_name)
 
-
             pseudo_label_all = pseudo_label_all_organ(pred_hard_post,args)
             batch['pseudo_label'] = pseudo_label_all.cpu()
             BATCH = invert_transform('pseudo_label',batch,val_transforms)
@@ -116,37 +111,6 @@ def validation(model, ValLoader, val_transforms, args):
             nib.save(pseudo_label_save,new_name)
             print('pseudo label saved in path: %s'%(new_name))
 
-
-
-        if args.store_entropy:
-            organ_index_target = TEMPLATE['target']
-            if not os.path.isdir(organ_entropy_save_path):
-                os.makedirs(organ_entropy_save_path)
-            for organ_idx in organ_index_target:
-                organ_entropy = create_entropy_map(pred_sigmoid,organ_idx)
-                organ_name_target = ORGAN_NAME_LOW[organ_idx-1]
-                batch[organ_name_target] = organ_entropy.cpu()
-                BATCH = invert_transform(organ_name_target,batch,val_transforms)
-                organ_invertd = np.squeeze(BATCH[0][organ_name_target].numpy(),axis = 0)*255
-                organ_save = nib.Nifti1Image(organ_invertd.astype(np.uint8),affine_temp)
-                new_name = os.path.join(organ_entropy_save_path, organ_name_target+'.nii.gz')
-                print('organ entropy saved in path: %s'%(new_name))
-                nib.save(organ_save,new_name)
-
-        if args.store_soft_pred:
-            organ_index_target = TEMPLATE['all']
-            if not os.path.isdir(organ_soft_pred_save_path):
-                os.makedirs(organ_soft_pred_save_path)
-            for organ_idx in organ_index_target:
-                organ_pred_soft_save = save_soft_pred(pred_sigmoid,pred_hard_post,organ_idx,args)
-                organ_name_target = ORGAN_NAME_LOW[organ_idx-1]
-                batch[organ_name_target] = organ_pred_soft_save.cpu()
-                BATCH = invert_transform(organ_name_target,batch,val_transforms)
-                organ_invertd = np.squeeze(BATCH[0][organ_name_target].numpy(),axis= 0)*255
-                organ_save = nib.Nifti1Image(organ_invertd.astype(np.uint8),affine_temp)
-                new_name = os.path.join(save_dir, organ_soft_pred_save_path, organ_name_target+'.nii.gz')
-                print('organ soft pred saved in path: %s'%(new_name))
-                nib.save(organ_save,new_name)
             
         torch.cuda.empty_cache()
 
@@ -193,8 +157,6 @@ def main():
     parser.add_argument('--original_label',action="store_true",default=False,help='whether dataset has original label')
     parser.add_argument('--cache_dataset', action="store_true", default=False, help='whether use cache dataset')
     parser.add_argument('--store_result', action="store_true", default=False, help='whether save prediction result')
-    parser.add_argument('--store_entropy', action="store_true", default=False, help='whether save entropy map')
-    parser.add_argument('--store_soft_pred', action="store_true", default=False, help='whether save soft prediction')
     parser.add_argument('--cache_rate', default=0.6, type=float, help='The percentage of cached data in total')
     parser.add_argument('--cpu',action="store_true", default=False, help='The entire inference process is performed on the GPU ')
     parser.add_argument('--threshold_organ', default='Pancreas Tumor')
@@ -203,8 +165,6 @@ def main():
     parser.add_argument('--create_dataset',action="store_true", default=False)
 
     args = parser.parse_args()
-
-    # prepare the 3D model
  
     model = Universal_model(img_size=(args.roi_x, args.roi_y, args.roi_z),
                     in_channels=1,
