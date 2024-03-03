@@ -3,7 +3,6 @@
 ### Our proposed architecture and expected result for two rounds loop are shown below.
 
 <p align="center"><img width="100%" src="documents/Our_Structure.png" /></p>
-<p align="center"><img width="100%" src="documents/Results_Round2.png" /></p>
 
 ## Paper
 
@@ -68,8 +67,10 @@ CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 python -W ignore -m torch.distributed.launc
 ```bash
 CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 python -W ignore -m torch.distributed.launch --nproc_per_node=8 --master_port=$RANDOM train.py --dist True --backbone swinunetr --data_root_path DATA_PATH --dataset_list DATA_LIST --use_freeze >>logs/DATASET.txt
 ```
+The expected reults after two rounds are shown below.
+<p align="center"><img width="100%" src="documents/Results_Round2.png" /></p>
 
-## 4. Generate Masks
+## 4. Test AI models
 
 ##### U-Net
 ```bash
