@@ -1,6 +1,6 @@
 # Leveraging AI Predicted and Expert Revised Annotations in Interactive Segmentation: Continual Tuning or Full Training?
 
-### Our proposed architecture and expected result for two rounds loop are shown below.
+### Our proposed architecture.
 
 <p align="center"><img width="100%" src="documents/Our_Structure.png" /></p>
 
@@ -22,7 +22,6 @@ ISBI 2024 <br/>
 ```bash
 git clone https://github.com/ollie-ztz/Continue_Tuning
 ```
-
 See [installation instructions](documents/INSTALL.md) to create an environment and obtain requirements.
 
 ## 1. Download AI models
@@ -37,10 +36,11 @@ Download the trained models and save them into `./pretrained_checkpoints/`.
 
 ## 2. Prepare your datasets
 
-Our method could be applied to publicly available datasets (e.g.m BTCV) or your private datasets. For the public datasets, please refer to [Datasets](documents/Dataset.md). Currently, we only take data formatted in `nii.gz`. For example, using the BTCV dataset as a reference, organize your datasets following the structure outlined below. Create your own dataset list and store it in /dataset/dataset_list.
+Our method could be applied to publicly available datasets (e.g.m BTCV) or your private datasets. For the public datasets, please refer to [Datasets](documents/Dataset.md). Currently, we only take data formatted in `nii.gz`. For example, using the BTCV dataset as a reference, organize your datasets following the structure outlined below. Create your own dataset list and store it in /dataset/dataset_list. The revised data should be arranged in the same format.
 ```bash
 01_Multi-Atlas_Labeling/img/img0001.nii.gz	01_Multi-Atlas_Labeling/label/label0001.nii.gz
 ```
+
 
 ## 3. Train AI models
 
@@ -60,12 +60,12 @@ CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 python -W ignore -m torch.distributed.launc
 
 ##### U-Net
 ```bash
-CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 python -W ignore -m torch.distributed.launch --nproc_per_node=8 --master_port=$RANDOM train.py --dist True --backbone unet --data_root_path DATA_PATH --dataset_list DATA_LIST --use_freeze >>logs/DATASET.txt
+CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 python -W ignore -m torch.distributed.launch --nproc_per_node=8 --master_port=$RANDOM train.py --dist True --backbone unet --data_root_path DATA_PATH --dataset_list DATA_LIST --continual_tuning >>logs/DATASET.txt
 ```
 
 ##### Swin UNETR
 ```bash
-CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 python -W ignore -m torch.distributed.launch --nproc_per_node=8 --master_port=$RANDOM train.py --dist True --backbone swinunetr --data_root_path DATA_PATH --dataset_list DATA_LIST --use_freeze >>logs/DATASET.txt
+CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 python -W ignore -m torch.distributed.launch --nproc_per_node=8 --master_port=$RANDOM train.py --dist True --backbone swinunetr --data_root_path DATA_PATH --dataset_list DATA_LIST --continual_tuning >>logs/DATASET.txt
 ```
 The expected reults after two rounds are shown below.
 <p align="center"><img width="100%" src="documents/Results_Round2.png" /></p>

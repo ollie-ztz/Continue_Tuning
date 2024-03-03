@@ -83,7 +83,7 @@ def process(args):
                     encoding=args.trans_encoding
                     )
     # define the non-frozen-layers
-    if args.use_freeze:
+    if args.continual_tuning:
         layers_to_not_frozen = ['controllers.3.0.weight','controllers.3.0.bias','controllers.3.2.weight','controllers.3.2.bias',
                                 'controllers.6.0.weight','controllers.6.0.bias','controllers.6.2.weight','controllers.6.2.bias',
                                 'controllers.7.0.weight','controllers.7.0.bias','controllers.7.2.weight','controllers.7.2.bias',
@@ -112,7 +112,7 @@ def process(args):
     # criterion and optimizer
     loss_seg_DICE = loss.DiceLoss(num_classes=args.NUM_CLASS).to(args.device)
     loss_seg_CE = loss.Multi_BCELoss(num_classes=args.NUM_CLASS).to(args.device)
-    if args.use_freeze:
+    if args.continual_tuning:
         optimizer = torch.optim.AdamW(filter(lambda p: p.requires_grad, model.parameters()), lr=args.lr, weight_decay=args.weight_decay)
     else:
         optimizer = torch.optim.AdamW(model.parameters(), lr=args.lr, weight_decay=args.weight_decay)
@@ -230,7 +230,7 @@ def main():
     parser.add_argument('--cache_rate', default=0.005, type=float, help='The percentage of cached data in total')
     parser.add_argument('--internal_organ', default=True , type=bool, help='Ourdata or internal organ')
     parser.add_argument('--original_label',action="store_true",default=False,help='whether use original label')
-    parser.add_argument('--use_freeze',action="store_true",default=False,help='whether use freeze')
+    parser.add_argument('--continual_tuning',action="store_true",default=False,help='whether use freeze')
 
 
     args = parser.parse_args()
