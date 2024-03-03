@@ -11,12 +11,6 @@
 ISBI 2024 <br/>
 [paper](https://arxiv.org/pdf/2402.19423.pdf) | [code](https://github.com/ollie-ztz/Continue_Tuning) | [poster](Coming Soon)
 
-<!-- <b>AbdomenAtlas-8K: Human-in-the-Loop Annotating Eight Anatomical Structures for 8,448 Three-Dimensional Computed Tomography Volumes in Three Weeks</b> <br/>
-[Chongyu Qu](https://github.com/Chongyu1117)<sup>1</sup>, [Tiezheng Zhang](https://github.com/ollie-ztz)<sup>1</sup>, [Hualin Qiao](https://www.linkedin.com/in/hualin-qiao-a29438210/)<sup>2</sup>, [Jie Liu](https://ljwztc.github.io/)<sup>3</sup>, [Yucheng Tang](https://scholar.google.com/citations?hl=en&user=0xheliUAAAAJ)<sup>4</sup>, [Alan L. Yuille](https://www.cs.jhu.edu/~ayuille/)<sup>1</sup>, and [Zongwei Zhou](https://www.zongweiz.com/)<sup>1,*</sup> <br/>
-<sup>1 </sup>Johns Hopkins University,  <br/>
-<sup>2 </sup>Rutgers University,  <br/>
-<sup>3 </sup>City University of Hong Kong,   <br/>
-<sup>4 </sup>NVIDIA <br/> -->
 <b>RSNA 2023 (Oral Presentation)</b><br/>
 [paper](documents/RSNA2023.pdf) | [code](https://github.com/ollie-ztz/Continue_Tuning) | [slides](documents/RSNA_Poster.pdf)
 
@@ -41,15 +35,13 @@ Download the trained models and save them into `./pretrained_checkpoints/`.
 
 ## 2. Prepare your datasets
 
-It can be publicly available datasets (e.g., BTCV) or your private datasets. Currently, we only take data formatted in `nii.gz`. This repository will help you assign annotations to these datasets, including 25 organs and six types of tumors (*where the annotation of eight organs is pretty accurate*).
+Our method could be applied to publicly available datasets (e.g.m BTCV) or your private datasets. For the public datasets, please refer to [CLIP-Driven Universal Model](https://github.com/ljwztc/CLIP-Driven-Universal-Model). Currently, we only take data formatted in `nii.gz`. 
 
-##### 2.1 Download
+##### 2.1 Preparing
 
-Taking the BTCV dataset as an example, download this dataset and save it to the `datapath` directory.
+Taking the BTCV dataset as an example, prepare your datasets as shown below.
 ```bash
-cd $datapath
-wget https://www.dropbox.com/s/jnv74utwh99ikus/01_Multi-Atlas_Labeling.tar.gz
-tar -xzvf 01_Multi-Atlas_Labeling.tar.gz
+01_Multi-Atlas_Labeling/img/img0002.nii.gz	01_Multi-Atlas_Labeling/label/label0002.nii.gz
 ```
 
 ##### 2.2 Preprocessing
