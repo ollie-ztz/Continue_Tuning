@@ -55,8 +55,12 @@ CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 python -W ignore -m torch.distributed.launc
 ```bash
 CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 python -W ignore -m torch.distributed.launch --nproc_per_node=8 --master_port=$RANDOM train.py --dist True --backbone swinunetr --data_root_path DATA_PATH --dataset_list DATA_LIST --batch_size 1 >>logs/DATASET.txt
 ```
+### 3.2 Constructing Expert Resived data from AI predicted ones after Round 1. 
+In our experiments, we select the data needed to be revised based on the [attention map](https://github.com/MrGiovanni/AbdomenAtlas?tab=readme-ov-file). In your settings, you could ask your annotators to revise all the data predicted by your models from Round 1.
 
-### 3.2 Round 2
+We suggest that using our proposed Continual Tuning method to perform round 2. Then, in your dataset_list, you only need the revised datas. While, if you want to train from scratch, please use the same amount of data as previous step.
+
+### 3.3.1 Round 2 (Continual Tuning)
 
 ##### U-Net
 ```bash
@@ -69,6 +73,17 @@ CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 python -W ignore -m torch.distributed.launc
 ```
 The expected reults after two rounds are shown below.
 <p align="center"><img width="100%" src="documents/Results_Round2.png" /></p>
+
+### 3.3.2 Round 2 (Full Tuning)
+
+```bash
+CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 python -W ignore -m torch.distributed.launch --nproc_per_node=8 --master_port=$RANDOM train.py --dist True --backbone unet --data_root_path DATA_PATH --dataset_list DATA_LIST --batch_size 1 >>logs/DATASET.txt
+```
+
+##### Swin UNETR
+```bash
+CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 python -W ignore -m torch.distributed.launch --nproc_per_node=8 --master_port=$RANDOM train.py --dist True --backbone swinunetr --data_root_path DATA_PATH --dataset_list DATA_LIST --batch_size 1 >>logs/DATASET.txt
+```
 
 ## 4. Test AI models
 
