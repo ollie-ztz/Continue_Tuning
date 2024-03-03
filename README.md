@@ -41,7 +41,7 @@ Our method could be applied to publicly available datasets (e.g.m BTCV) or your 
 01_Multi-Atlas_Labeling/img/img0001.nii.gz	01_Multi-Atlas_Labeling/label/label0001.nii.gz
 ```
 
-## 3. Train the model
+## 3. Train AI models
 
 #### Round 1
 
