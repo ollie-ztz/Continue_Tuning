@@ -15,16 +15,10 @@ import torch.distributed as dist
 from torch.nn.parallel import DistributedDataParallel
 from tensorboardX import SummaryWriter
 
-from monai.losses import DiceCELoss
-from monai.inferers import sliding_window_inference
-from monai.data import load_decathlon_datalist, decollate_batch, DistributedSampler
-from monai.transforms import AsDiscrete
-from monai.metrics import DiceMetric
-
 from model.Universal_model import Universal_model
 from dataset.dataloader import get_loader
 from utils import loss
-from utils.utils import TEMPLATE, get_key, NUM_CLASS, merge_organ, containing_totemplate
+from utils.utils import TEMPLATE, get_key, merge_organ, containing_totemplate
 from optimizers.lr_scheduler import LinearWarmupCosineAnnealingLR
 
 
@@ -44,13 +38,13 @@ def train(args, train_loader, model, optimizer, loss_seg_DICE, loss_seg_CE):
         # Assuming we use our pseudo label here to train and we only care about the original 5 organs for dataset 08
         x, lbl, name = batch["image"].to(args.device), batch["label"].float(), batch['name']
         B, C, W, H, D = lbl.shape
-        y = torch.zeros(B,NUM_CLASS,W,H,D)
+        y = torch.zeros(B,args.NUM_CLASS,W,H,D)
         for b in range(B):
             for src,tgt in enumerate(TEMPLATE['all']):
                 y[b][src][lbl[b][0]==tgt] = 1
         if args.original_label:
             for b in range(B):
-                for c in range(NUM_CLASS):
+                for c in range(args.NUM_CLASS):
                     if c+1 not in TEMPLATE['finetune_com']:
                         y[b][c] = 0
         y = merge_organ(args,y,containing_totemplate)
@@ -84,7 +78,7 @@ def process(args):
     # prepare the 3D model
     model = Universal_model(img_size=(args.roi_x, args.roi_y, args.roi_z),
                     in_channels=1,
-                    out_channels=NUM_CLASS,
+                    out_channels=args.NUM_CLASS,
                     backbone=args.backbone,
                     encoding=args.trans_encoding
                     )
@@ -116,8 +110,8 @@ def process(args):
         model = DistributedDataParallel(model, device_ids=[args.device])
 
     # criterion and optimizer
-    loss_seg_DICE = loss.DiceLoss(num_classes=NUM_CLASS).to(args.device)
-    loss_seg_CE = loss.Multi_BCELoss(num_classes=NUM_CLASS).to(args.device)
+    loss_seg_DICE = loss.DiceLoss(num_classes=args.NUM_CLASS).to(args.device)
+    loss_seg_CE = loss.Multi_BCELoss(num_classes=args.NUM_CLASS).to(args.device)
     if args.use_freeze:
         optimizer = torch.optim.AdamW(filter(lambda p: p.requires_grad, model.parameters()), lr=args.lr, weight_decay=args.weight_decay)
     else:
@@ -224,6 +218,7 @@ def main():
     parser.add_argument('--roi_y', default=96, type=int, help='roi size in y direction')
     parser.add_argument('--roi_z', default=96, type=int, help='roi size in z direction')
     parser.add_argument('--num_samples', default=2, type=int, help='sample number in each ct')
+    parser.add_argument('--NUM_CLASS', default=8, type=int, help='number of labels')
 
     parser.add_argument('--phase', default='train', help='train or validation or test')
     parser.add_argument('--uniform_sample', action="store_true", default=False, help='whether utilize uniform sample strategy')

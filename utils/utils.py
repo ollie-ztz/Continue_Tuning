@@ -32,11 +32,6 @@ from monai.utils import (
 from monai.data import decollate_batch
 from monai.transforms import Invertd, SaveImaged
 
-
-NUM_CLASS = 32
-
-
-
 TEMPLATE={
     '01': [1,2,3,4,5,6,7,8,9,10,11,12,13,14],
     '01_2': [1,3,4,5,6,7,11,14],
@@ -85,53 +80,7 @@ ORGAN_NAME_OVERLAP = ['spleen', 'kidney_right', 'kidney_left', 'gall_bladder', '
                 'lung_right', 'lung_left', 'colon', 'intestine', 'rectum', 
                 'bladder', 'prostate', 'femur_left', 'femur_right', ]
 
-## mapping to original setting
-MERGE_MAPPING_v1 = {
-    '01': [(1,1), (2,2), (3,3), (4,4), (5,5), (6,6), (7,7), (8,8), (9,9), (10,10), (11,11), (12,12), (13,13), (14,14)],
-    '02': [(1,1), (3,3), (4,4), (5,5), (6,6), (7,7), (11,11), (14,14)],
-    '03': [(6,1)],
-    '04': [(6,1), (27,2)],
-    '05': [(2,1), (3,1), (26, 2), (32,3)],
-    '06': [(1,1), (2,2), (3,3), (4,4), (6,5), (7,6), (11,7), (16,8), (17,9)],
-    '07': [(1,2), (2,4), (3,3), (4,6), (5,7), (6,1), (7,5), (11,8), (12,12), (13,12), (14,9), (18,10), (19,11), (20,13), (21,14), (23,15), (24,16)],
-    '08': [(1,3), (2,2), (3,2), (6,1), (11,4)],
-    '09': [(1,1), (2,2), (3,3), (4,4), (5,5), (6,6), (7,7), (8,8), (9,9), (11,10), (12,11), (13,12), (14,13), (21,14), (22,15)],
-    '10_03': [(6,1), (27,2)],
-    '10_06': [(30,1)],
-    '10_07': [(11,1), (28,2)],
-    '10_08': [(15,1), (29,2)],
-    '10_09': [(1,1)],
-    '10_10': [(31,1)],
-    '12': [(2,4), (3,4), (21,2), (6,1), (16,3), (17,3)],  
-    '13': [(1,3), (2,2), (3,2), (4,8), (5,9), (6,1), (7,7), (8,5), (9,6), (11,4), (12,10), (13,11), (25,12)],
-    '14': [(1,18),(2,11),(3,10),(4,8),(6,12),(7,19),(8,1),(9,9),(11,13)],
-    '15': [(1,1), (2,2), (3,3), (4,4), (5,5), (6,6), (7,7), (8,8), (9,9), (10,10), (11,11), (12,12), (13,13), (14,14), (16,16), (17,17), (18,18)],
-}
 
-## split left and right organ more than dataset defined
-## expand on the original class number 
-MERGE_MAPPING_v2 = {
-    '01': [(1,1), (2,2), (3,3), (4,4), (5,5), (6,6), (7,7), (8,8), (9,9), (10,10), (11,11), (12,12), (13,13), (14,14)],
-    '02': [(1,1), (3,3), (4,4), (5,5), (6,6), (7,7), (11,11), (14,14)],
-    '03': [(6,1)],
-    '04': [(6,1), (27,2)],
-    '05': [(2,1), (3,3), (26, 2), (32,3)],
-    '06': [(1,1), (2,2), (3,3), (4,4), (6,5), (7,6), (11,7), (16,8), (17,9)],
-    '07': [(1,2), (2,4), (3,3), (4,6), (5,7), (6,1), (7,5), (11,8), (12,12), (13,17), (14,9), (18,10), (19,11), (20,13), (21,14), (23,15), (24,16)],
-    '08': [(1,3), (2,2), (3,5), (6,1), (11,4)],
-    '09': [(1,1), (2,2), (3,3), (4,4), (5,5), (6,6), (7,7), (8,8), (9,9), (11,10), (12,11), (13,12), (14,13), (21,14), (22,15)],
-    '10_03': [(6,1), (27,2)],
-    '10_06': [(30,1)],
-    '10_07': [(11,1), (28,2)],
-    '10_08': [(15,1), (29,2)],
-    '10_09': [(1,1)],
-    '10_10': [(31,1)],
-    '12': [(2,4), (3,5), (21,2), (6,1), (16,3), (17,6)],  
-    '13': [(1,3), (2,2), (3,13), (4,8), (5,9), (6,1), (7,7), (8,5), (9,6), (11,4), (12,10), (13,11), (25,12)],
-    '14': [(1,18),(2,11),(3,10),(4,8),(6,12),(7,19),(8,1),(9,9),(11,13)],
-    '15': [(1,1), (2,2), (3,3), (4,4), (5,5), (6,6), (7,7), (8,8), (9,9), (10,10), (11,11), (12,12), (13,13), (14,14), (16,16), (17,17), (18,18)],
-    '18': [(1,3), (2,2), (3,13), (4,9), (6,1),(7,11),(8,5),(9,6),(11,4)],
-}
 PSEUDO_LABEL_ALL = {
     'all':[(1,1), (2,2), (3,3), (4,4), (5,5), (6,6), (7,7), (8,8), (9,9), (10,10), (11,11), (12,12), (13,13), (14,14), (15,15),(16,16), (17,17), (18,18),(19,19),(20,20),(21,21),(22,22),(23,23),(24,24),(25,25),(26,26),(27,27),(28,28),(29,29),(30,30),(31,31),(32,32)],
     'Spleen':[(1,1)],
@@ -325,8 +274,6 @@ def organ_post_process(pred_mask, organ_list,case_dir,args):
                                     writer = csv.writer(f)
                                     content = case_id
                                     writer.writerow([case_id])
-
-
                 else:
                     if left_lung_size/right_lung_size > 4:
                         mid_point = int(left_lung_mask.shape[0]/2)
@@ -404,8 +351,6 @@ def lung_overlap_post_process(pred_mask):
         print('start separating two lungs!')
         ONE = int(candidates[0][0])
         TWO = int(candidates[1][0])
-
-
         print('number of connected components:'+str(len(candidates)))
         a1,b1,c1 = np.where(label_out==ONE)
         a2,b2,c2 = np.where(label_out==TWO)
@@ -675,9 +620,6 @@ def keep_topk_largest_connected_object(npy_mask, k, area_least, out_mask, out_la
             out_mask[labels_out == int(candidates[i][0])] = out_label
 
 def threshold_organ(data, args,organ=None, threshold=None):
-    ### threshold the sigmoid value to hard label
-    ## data: sigmoid value
-    ## threshold_list: a list of organ threshold
     B = data.shape[0]
     threshold_list = []
     if organ:
@@ -727,56 +669,6 @@ def invert_transform(invert_key = str,batch = None, input_transform = None ):
     return BATCH
 
 
-def visualize_label(batch, save_dir, input_transform):
-    ### function: save the prediction result into dir
-    ## Input
-    ## batch: the batch dict output from the monai dataloader
-    ## save_dir: the directory for saving
-    ## input_transform: the dataloader transform
-    post_transforms = Compose([
-        Invertd(
-            keys=['pseudo_label'],
-            transform=input_transform,
-            orig_keys="image",
-            nearest_interp=True,
-            to_tensor=True,
-        ),
-        # SaveImaged(keys="label", 
-        #         meta_keys="label_meta_dict" , 
-        #         output_dir=save_dir, 
-        #         output_postfix="original_label", 
-        #         resample=False
-        # ),
-        SaveImaged(keys='pseudo_label', 
-                meta_keys="image_meta_dict" , 
-                output_dir=save_dir, 
-                output_postfix="pseudo_label",
-                resample=False,
-                separate_folder=False,
-        ),
-    ])
-    
-    BATCH = [post_transforms(i) for i in decollate_batch(batch)]
-
-
-def merge_label(pred_bmask, name):
-    B, C, W, H, D = pred_bmask.shape
-    merged_label_v1 = torch.zeros(B,1,W,H,D).cuda()
-    merged_label_v2 = torch.zeros(B,1,W,H,D).cuda()
-    for b in range(B):
-        template_key = get_key(name[b])
-        transfer_mapping_v1 = MERGE_MAPPING_v1[template_key]
-        transfer_mapping_v2 = MERGE_MAPPING_v2[template_key]
-        organ_index = []
-        for item in transfer_mapping_v1:
-            src, tgt = item
-            merged_label_v1[b][0][pred_bmask[b][src-1]==1] = tgt
-        for item in transfer_mapping_v2:
-            src, tgt = item
-            merged_label_v2[b][0][pred_bmask[b][src-1]==1] = tgt
-
-    return merged_label_v1, merged_label_v2
-
 def pseudo_label_all_organ(pred_bmask,args):
     B, C, W, H, D = pred_bmask.shape
     if args.cpu:
@@ -805,62 +697,6 @@ def pseudo_label_single_organ(pred_bmask,organ_index,args):
             pseudo_label_single_organ[b][0][pred_bmask[b][src-1]==1] = tgt
     return pseudo_label_single_organ
 
-def create_entropy_map(pred,organ_index):
-    B,C,W,H,D = pred.shape
-    entropy_map = torch.zeros(B,1,W,H,D).cuda()
-    for b in range(B):
-        organ_soft_pred = pred[b,organ_index-1]
-        organ_uncertainty = torch.special.entr(organ_soft_pred)
-        entropy_map[b][0] = organ_uncertainty
-    return entropy_map
-
-def create_entropy_map_nnunet(pred_softmax):
-    organ_soft_pred = torch.from_numpy(pred_softmax.copy())
-    organ_uncertainty = torch.special.entr(organ_soft_pred)
-    return organ_uncertainty
-
-def entropy_post_process(entropy_map):
-    entropy_prob_map = entropy_map.copy()
-    entropy_mask = np.zeros(entropy_map.shape)
-    threshold = 0.05
-    struct2 = ndimage.generate_binary_structure(3, 3)
-    entropy_threshold = entropy_map > threshold
-    entropy_threshold_erosion =  ndimage.binary_erosion(entropy_threshold, structure=struct2,iterations=2)
-    entropy_threshold_dilation = ndimage.binary_dilation(entropy_threshold_erosion,structure=struct2,iterations=2)
-    entropy_mask[entropy_threshold_dilation==1]=1
-    entropy_prob_map[entropy_mask!=1]=0
-    return entropy_prob_map,entropy_mask
-
-
-def save_soft_pred(pred_soft,pred_hard_post,organ_index,args):
-    single_organ_binary_mask = pseudo_label_single_organ(pred_hard_post,organ_index,args)
-    struct2 = ndimage.generate_binary_structure(3, 3)
-    
-    B,C,W,H,D = pred_hard_post.shape 
-    organ_pred_soft_save = torch.zeros(B,1,W,H,D).cuda()
-    for b in range(B):
-        binary_mask = single_organ_binary_mask[b,0]
-        binary_mask_dilation = ndimage.binary_dilation(binary_mask.cpu().numpy(),structure=struct2,iterations=1)
-        organ_pred_soft = pred_soft[b,organ_index-1]
-        organ_pred_soft[binary_mask_dilation==0]=0
-        organ_pred_soft_save[b][0] = organ_pred_soft
-
-    return organ_pred_soft_save
-
-#def attention_map(pred_soft,pred_hard_post,organ_index,args):
-       
-def std_post_process(std_map):
-    std_map_float = std_map.copy()
-    std_mask = np.zeros(std_map.shape)
-    threshold = 0.1
-    struct2 = ndimage.generate_binary_structure(3, 3)
-    std_threshold = std_map > threshold
-    std_threshold_erosion = ndimage.binary_erosion(std_threshold,structure=struct2,iterations=2)
-    std_threshold_dilation = ndimage.binary_dilation(std_threshold_erosion,structure=struct2,iterations=2)
-    std_mask[std_threshold_dilation==1]=1
-    std_map_float[std_mask!=1]=0
-    return std_map_float,std_mask
-
 
 def get_key(name):
     ## input: name
@@ -878,171 +714,6 @@ def get_key(name):
     return template_key
 
 
-def calculate_metrics(attention_ideal,attention_real):
-    ## organ_metrics_data: attention/overlap/uncertainty
-
-    tp = np.sum(np.multiply(attention_ideal,attention_real),axis = (0,1,2))
-    fp = np.sum(np.multiply(attention_ideal!=1,attention_real),axis = (0,1,2))
-    fn = np.sum(np.multiply(attention_ideal,attention_real!=1),axis = (0,1,2))
-    tn = np.sum(np.multiply(attention_ideal!=1,attention_real!=1),axis = (0,1,2))
-
-
-    sensitivity = tp/(tp+fn)
-    
-    specificity= tn/(tn+fp)
-    
-    precision = tp/(tp+fp)
-    
-    return sensitivity,specificity,precision
-
-
-
-
-
-def dice_score(preds, labels, spe_sen=False):  # on GPU
-    ### preds: w,h,d; label: w,h,d
-    assert preds.shape[0] == labels.shape[0], "predict & target batch size don't match"
-    preds = torch.where(preds > 0.5, 1., 0.)
-    predict = preds.contiguous().view(1, -1)
-    target = labels.contiguous().view(1, -1)
-
-    tp = torch.sum(torch.mul(predict, target))
-    fn = torch.sum(torch.mul(predict!=1, target))
-    fp = torch.sum(torch.mul(predict, target!=1))
-    tn = torch.sum(torch.mul(predict!=1, target!=1))
-
-    den = torch.sum(predict) + torch.sum(target) + 1
-
-    dice = 2 * tp / den
-    recall = tp/(tp+fn)
-    precision = tp/(tp+fp)
-    specificity = tn/(fp + tn)
-
-    if spe_sen:
-        return dice, recall, precision, specificity
-    else:
-        return dice, recall, precision
-
-
-def _get_gaussian(patch_size, sigma_scale=1. / 8) -> np.ndarray:
-    tmp = np.zeros(patch_size)
-    center_coords = [i // 2 for i in patch_size]
-    sigmas = [i * sigma_scale for i in patch_size]
-    tmp[tuple(center_coords)] = 1
-    gaussian_importance_map = gaussian_filter(tmp, sigmas, 0, mode='constant', cval=0)
-    gaussian_importance_map = gaussian_importance_map / np.max(gaussian_importance_map) * 1
-    gaussian_importance_map = gaussian_importance_map.astype(np.float32)
-
-    # gaussian_importance_map cannot be 0, otherwise we may end up with nans!
-    gaussian_importance_map[gaussian_importance_map == 0] = np.min(
-        gaussian_importance_map[gaussian_importance_map != 0])
-
-    return gaussian_importance_map
-
-
-def multi_net(net_list, img, task_id):
-    # img = torch.from_numpy(img).cuda()
-
-    padded_prediction = net_list[0](img, task_id)
-    padded_prediction = F.sigmoid(padded_prediction)
-    for i in range(1, len(net_list)):
-        padded_prediction_i = net_list[i](img, task_id)
-        padded_prediction_i = F.sigmoid(padded_prediction_i)
-        padded_prediction += padded_prediction_i
-    padded_prediction /= len(net_list)
-    return padded_prediction#.cpu().data.numpy()
-
-
-def check_data(dataset_check):
-    img = dataset_check[0]["image"]
-    label = dataset_check[0]["label"]
-    # print(dataset_check[0]["name"])
-    img_shape = img.shape
-    label_shape = label.shape
-    # print(f"image shape: {img_shape}, label shape: {label_shape}")
-    # print(torch.unique(label[0, :, :, 150]))
-    plt.figure("image", (18, 6))
-    plt.subplot(1, 2, 1)
-    plt.title("image")
-    plt.imshow(img[0, :, :, 150].detach().cpu(), cmap="gray")
-    plt.subplot(1, 2, 2)
-    plt.title("label")
-    plt.imshow(label[0, :, :, 150].detach().cpu())
-    plt.show()
-
-def contrast_adjustment(ct_data,lowest,highest):
-    ct_clip = np.clip(ct_data,lowest,highest)
-    ct_min = np.min(ct_clip)
-    ct_max = np.max(ct_clip)
-    slope = (1.0-0.0)/(ct_max-ct_min)
-    intercept = 0.0 - (slope*ct_min)
-    ct_adjustment = (ct_clip*slope+intercept)*255
-    return ct_adjustment
-
-def create_heatmap(consistency_map):
-    colormap = cv2.COLORMAP_JET
-    std = cv2.normalize(consistency_map, None, 0, 255, cv2.NORM_MINMAX)
-    heatmap = cv2.applyColorMap(std.astype(np.uint8), colormap)
-    heatmap[std==0]=0
-    return heatmap
-
-def draw_contours(ct,mask,color):
-    ret,thresh = cv2.threshold(mask,50,255,cv2.THRESH_BINARY)
-    contours,hierarchy = cv2.findContours(thresh,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
-    contour_img = cv2.drawContours(ct,contours,-1,color,2)
-
-    return ct
-def draw_transparent_contours(ct,mask,color):
-    ret,thresh = cv2.threshold(mask,50,255,cv2.THRESH_BINARY)
-    contours,hierarchy = cv2.findContours(thresh,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
-    zero_img = np.zeros_like(ct)
-    contour_img = cv2.drawContours(zero_img,contours,-1,color,2)
-    ct_with_contour = cv2.addWeighted(ct, 1, contour_img, 0.4, 0)
-    
-    return ct_with_contour
-
-
-
-def create_color_mask(mask,color):
-    color_mask = cv2.merge([mask]*3) * color
-    return color_mask
-
-def calculate_dice(mask1,mask2):
-    intersection = np.sum(mask1*mask2)
-    sum_masks = np.sum(mask1)+np.sum(mask2)
-    smooth = 1e-4
-    dice = (2.*intersection+smooth)/(sum_masks+smooth)
-    return dice
-
-
-def find_components(mask):
-    label_out = cc3d.connected_components(mask, connectivity=26)
-    areas = {}
-    for label, extracted in cc3d.each(label_out, binary=True, in_place=True):
-        areas[label] = fastremap.foreground(extracted)
-    candidates = sorted(areas.items(), key=lambda item: item[1], reverse=True)
-    return label_out , candidates
-
-def get_mask_edges(mask):
-    mask = mask ==1
-    # convert to bool array
-    edges = ndimage.binary_erosion(mask) ^ mask
-    return edges
-
-def get_surface_distance(mask1,mask2,spacing):
-    edges1 = get_mask_edges(mask1)
-    edges2 = get_mask_edges(mask2)
-    dis = ndimage.distance_transform_edt(~edges1, sampling=spacing)
-    return np.asarray(dis[edges2])
-
-def surface_dice(mask1,mask2,spacing,tolerance):
-    dis1 = get_surface_distance(mask1,mask2,spacing)
-    dis2 = get_surface_distance(mask2,mask1,spacing)
-    boundary_complete = len(dis1) + len(dis2)
-    boundary_correct = np.sum(dis1 <= tolerance) + np.sum(dis2 <= tolerance)
-    nsd = boundary_correct / boundary_complete
-    return nsd
-
 containing_totemplate = {
     6: [15,27,29],
     2:[26,32],
@@ -1052,49 +723,6 @@ containing_totemplate = {
     17:[30],
     19:[31],
 }
-
-
-# def binary_rf_split(lbl,index):
-#     right_index = index - 1
-#     left_index = index
-#     lbl = lbl.detach().cpu().numpy()
-#     new_lbl = lbl.copy()
-#     Right_organ = new_lbl[right_index]
-#     Left_organ = new_lbl[left_index]
-#     label_in = np.zeros_like(Right_organ)
-#     label_in[(Right_organ.astype(np.bool_))| (Left_organ.astype(np.bool_))] = 1
-#     label_out = cc3d.connected_components(label_in, connectivity=26)
-
-#     if len(np.unique(label_out)) > 3:
-#         count_sum = 0
-#         values, counts = np.unique(label_out, return_counts=True)
-#         num_list_sorted = sorted(values, key=lambda x: counts[x])[::-1]
-#         for i in num_list_sorted[3:]:
-#             label_out[label_out==i] = 0
-#             count_sum += counts[i]
-#         label_new = np.zeros(label_out.shape)
-#         for tgt, src in enumerate(num_list_sorted[:3]):
-#             label_new[label_out==src] = tgt
-#         label_out = label_new
-#     a1,b1,c1 = np.where(label_out==1)
-#     a2,b2,c2 = np.where(label_out==2)
-
-#     label_new = np.zeros(label_out.shape)
-
-#     if np.mean(a1) < np.mean(a2):
-#         label_new [label_out==1] = left_index
-#         label_new [label_out==2] = right_index
-#     else:
-#         label_new [label_out==1] = right_index
-#         label_new [label_out==2] = left_index
-#     temp1 = np.zeros_like(Right_organ)
-#     temp2 = np.zeros_like(Left_organ)
-#     temp1[label_new==right_index] = 1
-#     temp2[label_new==left_index] = 1
-#     new_lbl[right_index] = temp1
-#     new_lbl[left_index] = temp2
-
-#     return torch.from_numpy(new_lbl)
 
 
 def merge_organ(args,lbl,containing_totemplate):
@@ -1108,10 +736,6 @@ def merge_organ(args,lbl,containing_totemplate):
                     mask = (mask) | (temp)
                 mask = (mask) | (lbl[b][large_organ_index-1].type(torch.bool))
                 lbl[b][large_organ_index-1][mask] = 1
-
-    # else:
-        # The label is not from our dataset
-
 
     return lbl
 if __name__ == "__main__":

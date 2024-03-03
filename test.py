@@ -19,7 +19,7 @@ from monai.inferers import sliding_window_inference
 from model.Universal_model import Universal_model
 from dataset.dataloader_test import get_loader
 from utils.utils import pseudo_label_all_organ, pseudo_label_single_organ
-from utils.utils import TEMPLATE, ORGAN_NAME, NUM_CLASS,ORGAN_NAME_LOW
+from utils.utils import TEMPLATE, ORGAN_NAME, ORGAN_NAME_LOW
 from utils.utils import organ_post_process, threshold_organ, invert_transform
 
 torch.multiprocessing.set_sharing_strategy('file_system')
@@ -33,7 +33,7 @@ def validation(model, ValLoader, val_transforms, args):
     model.eval()
     dice_list = {}
     for key in TEMPLATE.keys():
-        dice_list[key] = np.zeros((2, NUM_CLASS))
+        dice_list[key] = np.zeros((2, args.NUM_CLASS))
     for index, batch in enumerate(tqdm(ValLoader)):
         if args.original_label:
             image, label, name_lbl,name_img = batch["image"].cuda(), batch["label"], batch["name_lbl"],batch["name_img"]
@@ -168,7 +168,7 @@ def main():
  
     model = Universal_model(img_size=(args.roi_x, args.roi_y, args.roi_z),
                     in_channels=1,
-                    out_channels=NUM_CLASS,
+                    out_channels=args.NUM_CLASS,
                     backbone=args.backbone,
                     encoding='word_embedding'
                     )
