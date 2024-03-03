@@ -1,7 +1,9 @@
 # Leveraging AI Predicted and Expert Revised Annotations in Interactive Segmentation: Continual Tuning or Full Training?
 
-Our proposed architecture is shown below.
+### Our proposed architecture and expected result for two rounds loop are shown below.
+
 <p align="center"><img width="100%" src="documents/Our_Structure.png" /></p>
+<p align="center"><img width="100%" src="documents/Results_Round2.png" /></p>
 
 ## Paper
 
