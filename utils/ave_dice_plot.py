@@ -63,12 +63,12 @@ def Cal_dice_thr_csv(csv_file, threshold):
 # ave_re_550 = (dice_after_550[4]+dice_after_550[5]+dice_after_550[6]+dice_after_550[7])/4
 # ave_non_550 = (dice_after_550[0]+dice_after_550[1]+dice_after_550[2]+dice_after_550[3]+dice_after_550[8])/5
 
-dice_08_before = '/home/tzhang85/Continue_Tuning_ISBI2024/Dice_record/Unet_proof/dice_250.csv'
-dice_08_after_260 = '/home/tzhang85/Continue_Tuning_ISBI2024/Dice_record/Unet_proof/dice_250.csv'
-dice_08_after_270 = '/home/tzhang85/Continue_Tuning_ISBI2024/Dice_record/Unet_proof/dice_250.csv'
-dice_08_after_280 = '/home/tzhang85/Continue_Tuning_ISBI2024/Dice_record/Unet_proof/dice_250.csv'
-dice_08_after_290 = '/home/tzhang85/Continue_Tuning_ISBI2024/Dice_record/Unet_proof/dice_250.csv'
-dice_08_after_350 = '/home/tzhang85/Continue_Tuning_ISBI2024/Dice_record/Unet_proof/dice_250.csv'
+dice_08_before = '/data2/tzhang/continue_learning/CLIP_Based_Continue_Learning/Dice_record/dice_after_before.csv'
+dice_08_after_260 = '/data2/tzhang/continue_learning/CLIP_Based_Continue_Learning/Dice_record/dice_after_260.csv'
+dice_08_after_270 = '/data2/tzhang/continue_learning/CLIP_Based_Continue_Learning/Dice_record/dice_after_270.csv'
+dice_08_after_280 = '/data2/tzhang/continue_learning/CLIP_Based_Continue_Learning/Dice_record/dice_after_280.csv'
+dice_08_after_290 = '/data2/tzhang/continue_learning/CLIP_Based_Continue_Learning/Dice_record/dice_after_290.csv'
+dice_08_after_350 = '/data2/tzhang/continue_learning/CLIP_Based_Continue_Learning/Dice_record/dice_after_350.csv'
 dice_before = Cal_dice_thr_csv(dice_08_before, 1e-4)
 dice_after_260 = Cal_dice_thr_csv(dice_08_after_260, 1e-4)
 dice_after_270 = Cal_dice_thr_csv(dice_08_after_270, 1e-4)
