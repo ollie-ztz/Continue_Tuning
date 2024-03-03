@@ -1,5 +1,6 @@
 # Leveraging AI Predicted and Expert Revised Annotations in Interactive Segmentation: Continual Tuning or Full Training?
 
+Our proposed architecture is shown below.
 <p align="center"><img width="100%" src="documents/Our_Structure.png" /></p>
 
 ## Paper
@@ -37,7 +38,7 @@ Download the trained models and save them into `./pretrained_checkpoints/`.
 
 Our method could be applied to publicly available datasets (e.g.m BTCV) or your private datasets. For the public datasets, please refer to [CLIP-Driven Universal Model](https://github.com/ljwztc/CLIP-Driven-Universal-Model). Currently, we only take data formatted in `nii.gz`. For example, using the BTCV dataset as a reference, organize your datasets following the structure outlined below. Create your own dataset list and store it in /dataset/dataset_list.
 ```bash
-01_Multi-Atlas_Labeling/img/img0002.nii.gz	01_Multi-Atlas_Labeling/label/label0002.nii.gz
+01_Multi-Atlas_Labeling/img/img0001.nii.gz	01_Multi-Atlas_Labeling/label/label0001.nii.gz
 ```
 
 ## 3. Train the model
@@ -55,6 +56,16 @@ CUDA_VISIBLE_DEVICES=0 python -W ignore test.py --resume pretrained_checkpoints/
 ```
 
 #### Round 2
+
+##### U-Net
+```bash
+CUDA_VISIBLE_DEVICES=0 python -W ignore test.py --resume pretrained_checkpoints/unet.pth --backbone unet --save_dir $savepath --dataset_list $dataname --data_root_path $datapath --store_result >> logs/$dataname.unet.txt
+```
+
+##### Swin UNETR
+```bash
+CUDA_VISIBLE_DEVICES=0 python -W ignore test.py --resume pretrained_checkpoints/swinunetr.pth --backbone swinunetr --save_dir $savepath --dataset_list $dataname --data_root_path $datapath --store_result >> logs/$dataname.swinunetr.txt
+```
 
 ## 4. Generate Masks
 
