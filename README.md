@@ -37,7 +37,7 @@ Download the trained models and save them into `./pretrained_checkpoints/`.
 
 ## 2. Prepare your datasets
 
-Our method could be applied to publicly available datasets (e.g.m BTCV) or your private datasets. For the public datasets, please refer to [CLIP-Driven Universal Model](https://github.com/ljwztc/CLIP-Driven-Universal-Model). Currently, we only take data formatted in `nii.gz`. For example, using the BTCV dataset as a reference, organize your datasets following the structure outlined below. Create your own dataset list and store it in /dataset/dataset_list.
+Our method could be applied to publicly available datasets (e.g.m BTCV) or your private datasets. For the public datasets, please refer to [Datasets](documents/Dataset.md). Currently, we only take data formatted in `nii.gz`. For example, using the BTCV dataset as a reference, organize your datasets following the structure outlined below. Create your own dataset list and store it in /dataset/dataset_list.
 ```bash
 01_Multi-Atlas_Labeling/img/img0001.nii.gz	01_Multi-Atlas_Labeling/label/label0001.nii.gz
 ```
