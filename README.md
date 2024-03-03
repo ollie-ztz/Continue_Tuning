@@ -43,28 +43,28 @@ Our method could be applied to publicly available datasets (e.g.m BTCV) or your 
 
 ## 3. Train AI models
 
-#### Round 1
+### 3.1 Round 1
 
 ##### U-Net
 ```bash
-CUDA_VISIBLE_DEVICES=0 python -W ignore test.py --resume pretrained_checkpoints/unet.pth --backbone unet --save_dir $savepath --dataset_list $dataname --data_root_path $datapath --store_result >> logs/$dataname.unet.txt
+CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 python -W ignore -m torch.distributed.launch --nproc_per_node=8 --master_port=$RANDOM train.py --dist True --backbone unet --data_root_path DATA_PATH --dataset_list DATA_LIST --batch_size 1 >>logs/DATASET.txt
 ```
 
 ##### Swin UNETR
 ```bash
-CUDA_VISIBLE_DEVICES=0 python -W ignore test.py --resume pretrained_checkpoints/swinunetr.pth --backbone swinunetr --save_dir $savepath --dataset_list $dataname --data_root_path $datapath --store_result >> logs/$dataname.swinunetr.txt
+CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 python -W ignore -m torch.distributed.launch --nproc_per_node=8 --master_port=$RANDOM train.py --dist True --backbone swinunetr --data_root_path DATA_PATH --dataset_list DATA_LIST --batch_size 1 >>logs/DATASET.txt
 ```
 
-#### Round 2
+### 3.2 Round 2
 
 ##### U-Net
 ```bash
-CUDA_VISIBLE_DEVICES=0 python -W ignore test.py --resume pretrained_checkpoints/unet.pth --backbone unet --save_dir $savepath --dataset_list $dataname --data_root_path $datapath --store_result >> logs/$dataname.unet.txt
+CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 python -W ignore -m torch.distributed.launch --nproc_per_node=8 --master_port=$RANDOM train.py --dist True --backbone unet --data_root_path DATA_PATH --dataset_list DATA_LIST --use_freeze >>logs/DATASET.txt
 ```
 
 ##### Swin UNETR
 ```bash
-CUDA_VISIBLE_DEVICES=0 python -W ignore test.py --resume pretrained_checkpoints/swinunetr.pth --backbone swinunetr --save_dir $savepath --dataset_list $dataname --data_root_path $datapath --store_result >> logs/$dataname.swinunetr.txt
+CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 python -W ignore -m torch.distributed.launch --nproc_per_node=8 --master_port=$RANDOM train.py --dist True --backbone swinunetr --data_root_path DATA_PATH --dataset_list DATA_LIST --use_freeze >>logs/DATASET.txt
 ```
 
 ## 4. Generate Masks
