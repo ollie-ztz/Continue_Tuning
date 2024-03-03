@@ -39,7 +39,7 @@ Our method could be applied to publicly available datasets (e.g.m BTCV) or your 
 
 ##### 2.1 Preparing
 
-Taking the BTCV dataset as an example, prepare your datasets as shown below. Generate your own datalist and store them in /dataset/dataset_list
+Taking the BTCV dataset as an example, prepare your datasets as shown below. Generate your own datalist and store them in /dataset/dataset_list.
 ```bash
 01_Multi-Atlas_Labeling/img/img0002.nii.gz	01_Multi-Atlas_Labeling/label/label0002.nii.gz
 ```
