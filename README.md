@@ -24,7 +24,7 @@ ISBI 2024 <br/>
 git clone https://github.com/ollie-ztz/Continue_Tuning
 ```
 
-See [installation instructions](document/INSTALL.md) to create an environment and obtain requirements.
+See [installation instructions](documents/INSTALL.md) to create an environment and obtain requirements.
 
 ## 1. Download AI models
 
