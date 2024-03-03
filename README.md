@@ -40,7 +40,9 @@ Our method could be applied to publicly available datasets (e.g.m BTCV) or your 
 01_Multi-Atlas_Labeling/img/img0002.nii.gz	01_Multi-Atlas_Labeling/label/label0002.nii.gz
 ```
 
-## 3. Generate masks
+## 3. Train the model
+
+#### Round 1
 
 ##### U-Net
 ```bash
@@ -51,8 +53,20 @@ CUDA_VISIBLE_DEVICES=0 python -W ignore test.py --resume pretrained_checkpoints/
 ```bash
 CUDA_VISIBLE_DEVICES=0 python -W ignore test.py --resume pretrained_checkpoints/swinunetr.pth --backbone swinunetr --save_dir $savepath --dataset_list $dataname --data_root_path $datapath --store_result >> logs/$dataname.swinunetr.txt
 ```
-To generate attention maps for the active learning process (Step 5 [optional]), remember to save entropy and soft predictions by using the options `--store_entropy` and `--store_soft_pred`
 
+#### Round 2
+
+## 4. Generate Masks
+
+##### U-Net
+```bash
+CUDA_VISIBLE_DEVICES=0 python -W ignore test.py --resume CHECKPOINT_PATH --backbone unet --save_dir SAVING_PATH --dataset_list DATA_LIST --data_root_path DATA_PATH --store_result >> logs/DATASET.unet.txt
+```
+
+##### Swin UNETR
+```bash
+CUDA_VISIBLE_DEVICES=0 python -W ignore test.py --resume CHECKPOINT_PATH --backbone swinunetr --save_dir SAVING_PATH --dataset_list DATA_LIST --data_root_path DATA_PATH --store_result >> logs/DATASET.unet.txt
+```
 
 
 <!-- ## Citation 
