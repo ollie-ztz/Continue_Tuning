@@ -58,7 +58,7 @@ CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 python -W ignore -m torch.distributed.launc
 ### 3.2 Constructing Expert Resived data from AI predicted ones after Round 1. 
 In our experiments, we select the data needed to be revised based on the [attention map](https://github.com/MrGiovanni/AbdomenAtlas?tab=readme-ov-file). In your settings, you could ask your annotators to revise all the data predicted by your models from Round 1.
 
-We suggest that using our proposed Continual Tuning method to perform round 2. Then, in your dataset_list, you only need the revised datas. While, if you want to train from scratch, please use the same amount of data as previous step.
+We suggest that using our proposed Continual Tuning method to perform round 2. Then, in your dataset_list, you only need the revised data. While, if you want to train from scratch, please use the same amount of data as previous step.
 
 ### 3.3.1 Round 2 (Continual Tuning)
 
