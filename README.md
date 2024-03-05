@@ -98,17 +98,16 @@ CUDA_VISIBLE_DEVICES=0 python -W ignore test.py --resume CHECKPOINT_PATH --backb
 ```
 
 
-<!-- ## Citation 
+## Citation 
 
 ```
-@article{qu2024abdomenatlas,
-  title={Abdomenatlas-8k: Annotating 8,000 CT volumes for multi-organ segmentation in three weeks},
-  author={Qu, Chongyu and Zhang, Tiezheng and Qiao, Hualin and Tang, Yucheng and Yuille, Alan L and Zhou, Zongwei and others},
-  journal={Advances in Neural Information Processing Systems},
-  volume={36},
-  year={2023}
+@article{zhang2024leveraging,
+  title={Leveraging AI Predicted and Expert Revised Annotations in Interactive Segmentation: Continual Tuning or Full Training?},
+  author={Zhang, Tiezheng and Chen, Xiaoxi and Qu, Chongyu and Yuille, Alan and Zhou, Zongwei},
+  journal={arXiv preprint arXiv:2402.19423},
+  year={2024}
 }
-``` -->
+```
 
 ## Acknowledgements
 This work was supported by the Lustgarten Foundation for Pancreatic Cancer Research and partially by the Patrick J. McGovern Foundation Award. We appreciate the effort of the MONAI Team to provide open-source code for the community.
