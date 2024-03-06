@@ -1,4 +1,4 @@
-# Leveraging AI Predicted and Expert Revised Annotations in Interactive Segmentation: Continual Tuning or Full Training?
+# [ISBI 2024]Leveraging AI Predicted and Expert Revised Annotations in Interactive Segmentation: Continual Tuning or Full Training?
 
 ### Our proposed architecture.
 
